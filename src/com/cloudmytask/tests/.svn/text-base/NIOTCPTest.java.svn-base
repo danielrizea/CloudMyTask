@@ -1,0 +1,66 @@
+package com.cloudmytask.tests;
+
+import java.util.ArrayList;
+
+import com.cloudmytask.client.NIOTCPClient;
+import com.cloudmytask.client.TCPClient;
+import com.cloudmytask.connectors.tcp.CMTServiceSocketConnectorTCP;
+import com.cloudmytask.connectors.tcpnio.CMTServiceSocketConnectorNIOTCP;
+import com.cloudmytask.service.CMTServiceObject;
+
+public class NIOTCPTest {
+
+	
+	public static void main(String args[]){
+		
+		int ports[] = new int[2];
+		ports[0] = 5004;
+		ports[1] = 5005;
+		
+		// Porneste serviciul de streaming.
+		CMTServiceObject ss = new CMTServiceObject();
+		ss.start();
+
+
+		CMTServiceSocketConnectorNIOTCP server = new CMTServiceSocketConnectorNIOTCP(ports, ss);
+		server.startRunning();
+				
+
+		
+		
+		//ss.start();
+		
+		// Porneste connector-ul de socketi.
+		CMTServiceSocketConnectorTCP sssc = new CMTServiceSocketConnectorTCP(ss, ports);
+		sssc.start();
+		
+	
+		ArrayList<NIOTCPClient> al = new ArrayList<NIOTCPClient>();
+		
+		for (int i = 0; i < 1; i++) {
+			NIOTCPClient client = new NIOTCPClient("localhost", 5004+i%2, 60001 + i + 1);
+			client.start();
+			al.add(client);
+		}
+		
+		for (NIOTCPClient client: al) {
+			try {
+				client.join();
+			} catch (Exception e) {}
+		}
+	
+		
+		try {
+			Thread.sleep(30000);
+		} catch (Exception e) {}
+		
+		// Opreste connector-ul de socketi.
+		sssc.stop();
+		ss.stop();
+		
+		// Opreste serviciul de streaming.
+		//ss.stop();
+		
+		
+	}
+}

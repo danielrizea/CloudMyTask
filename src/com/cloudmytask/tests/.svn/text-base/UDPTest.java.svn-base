@@ -1,0 +1,54 @@
+package com.cloudmytask.tests;
+
+import java.util.ArrayList;
+
+import com.cloudmytask.client.UDPClient;
+import com.cloudmytask.connectors.udp.CMTServiceSocketConnectorUDP;
+import com.cloudmytask.service.CMTServiceObject;
+
+public class UDPTest {
+
+	
+	public static void main(String args[]){
+		
+		int ports[] = new int[2];
+		ports[0] = 5000;
+		ports[1] = 5001;
+		
+		// Porneste serviciul de streaming.
+		CMTServiceObject ss = new CMTServiceObject();
+		
+		//ss.start();
+		
+		// Porneste connector-ul de socketi.
+		CMTServiceSocketConnectorUDP sssc = new CMTServiceSocketConnectorUDP(ss, ports);
+		sssc.start();
+	
+		ArrayList<UDPClient> al = new ArrayList<UDPClient>();
+		
+		for (int i = 0; i < 1; i++) {
+			UDPClient client = new UDPClient("localhost", 5000+i%2, 60000 + i + 1);
+			client.start();
+			al.add(client);
+		}
+		
+		for (UDPClient client: al) {
+			try {
+				client.join();
+			} catch (Exception e) {}
+		}
+	
+		
+		try {
+			Thread.sleep(30000);
+		} catch (Exception e) {}
+		
+		// Opreste connector-ul de socketi.
+		sssc.stop();
+		
+		// Opreste serviciul de streaming.
+		//ss.stop();
+		
+		
+	}
+}

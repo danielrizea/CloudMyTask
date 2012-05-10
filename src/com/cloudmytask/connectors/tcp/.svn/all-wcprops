@@ -1,0 +1,29 @@
+K 25
+svn:wc:ra_dav:version-url
+V 56
+/svn/!svn/ver/8/trunk/src/com/cloudmytask/connectors/tcp
+END
+CMTServiceSocketConnectorTCP.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/8/trunk/src/com/cloudmytask/connectors/tcp/CMTServiceSocketConnectorTCP.java
+END
+SocketConnectorTCPProcessJob.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/8/trunk/src/com/cloudmytask/connectors/tcp/SocketConnectorTCPProcessJob.java
+END
+SocketConnectorTCPReceiveJob.java
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/svn/!svn/ver/8/trunk/src/com/cloudmytask/connectors/tcp/SocketConnectorTCPReceiveJob.java
+END
+SocketConnectorTCPCallbackObject.java
+K 25
+svn:wc:ra_dav:version-url
+V 94
+/svn/!svn/ver/8/trunk/src/com/cloudmytask/connectors/tcp/SocketConnectorTCPCallbackObject.java
+END

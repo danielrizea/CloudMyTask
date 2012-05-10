@@ -1,0 +1,18 @@
+package com.cloudmytask.service;
+
+import com.cloudmytask.client.Request;
+import com.cloudmytask.connectors.CallbackInterface;
+
+public interface CMTPublicServiceInterface {
+	
+	public void decodeRequest(byte[] request, CallbackInterface ci);
+	
+	public void computeCMTRequest(byte[] request, CallbackInterface ci);
+	//tcp/udp
+	public void computeCMTRequest(Request request, CallbackInterface ci);
+	
+	public void testRequest(Request request, CallbackInterface ci);
+	
+	// prima metoda pentru intrare in servviciu in cazul UDP si TCP
+	public void createServerScriptFile(Request request, CallbackInterface ci);
+}
