@@ -1,6 +1,7 @@
 package com.cloudmytask.service;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
@@ -80,7 +81,16 @@ public class RunScriptOnServerJob implements Runnable {
 	        }
 		System.out.println("Send result to write level");
 		ci.sendResult(request);
+
 		
+		
+		//delete file at the end
+		try{
+			File file = new File(filename);
+			file.delete();
+		}catch(Exception e){
+			System.out.println("[RunScriptOnServer] delete file exception" +  e.getMessage());
+		}
 		//trimite la urmatoarea etapa
 		//this.service.searchCachedResultRequest(req, ci);
 	}

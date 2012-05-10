@@ -13,6 +13,8 @@ public interface CMTPrivateServiceInterface {
 	//am nevoie aici de createServerScriptFile pentru a avea acces la ea din DecodeJob
 	public void createServerScriptFile(Request request, CallbackInterface ci);
 	
+	public void jobHandOff(Request request, CallbackInterface ci);
+	
 	/*
 	public void searchCachedResultRequest(Request req, CallbackInterface ci);
 	

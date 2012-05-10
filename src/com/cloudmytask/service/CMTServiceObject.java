@@ -6,16 +6,19 @@ import java.util.concurrent.TimeUnit;
 
 import com.cloudmytask.client.Request;
 import com.cloudmytask.connectors.CallbackInterface;
+import com.cloudmytask.service.client.CMTClientPublicInterface;
 
 public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateServiceInterface {
 	
 	private ExecutorService decryptPool, decodePool, searchCachedResultPool, computeGCDPool, sendResultPool, cacheResultPool;
 
-	private ExecutorService createScriptFilePool, runScriptOnServerPool;
+	private ExecutorService createScriptFilePool, runScriptOnServerPool, jobHandOffPool;
 	
+	private CMTClientPublicInterface clientObjectInterface;
 	
+	private MachineDescription machineDescription;
 	
-	public CMTServiceObject() {
+	public CMTServiceObject(CMTClientPublicInterface clientObjectInterface, MachineDescription machineDescription) {
 //TODO -> mare grija cu poolurile de threaduri
 		//cache service client
 //TODO: getInterface details
@@ -30,7 +33,10 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		//TODO parametrizare
 		this.createScriptFilePool = Executors.newFixedThreadPool(4);
 		this.runScriptOnServerPool = Executors.newFixedThreadPool(4);
+		this.jobHandOffPool = Executors.newFixedThreadPool(4);
 		
+		this.clientObjectInterface = clientObjectInterface;
+		this.machineDescription = machineDescription;
 	}
 	
 
@@ -91,6 +97,13 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	}
 	
 	
+	public void jobHandOff(Request request, CallbackInterface ci) {
+		// TODO Auto-generated method stub
+		System.out.println("[CMTServiceObject] start job hand-off");
+		
+		this.jobHandOffPool.submit(new HandOffJob(this, request, ci, machineDescription));
+	}
+	
 //
 	/*
 	// Metode apelate de catre thread-urile din pool-uri.
@@ -148,6 +161,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 			e.printStackTrace();
 		}
 	}
-
-
+	
+	
+	
 }
