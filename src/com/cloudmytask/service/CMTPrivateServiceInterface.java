@@ -7,7 +7,7 @@ import com.cloudmytask.service.client.CMTClientPublicInterface;
 public interface CMTPrivateServiceInterface {
 	
 	//public void decodeRequest(byte[] request, CallbackInterface ci);
-
+	
 	public void decideMachineAvailable(Request request,CallbackInterface ci);
 	
 	//am nevoie aici de createServerScriptFile pentru a avea acces la ea din DecodeJob

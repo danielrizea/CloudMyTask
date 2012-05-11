@@ -18,6 +18,6 @@ public class DecodeJob implements Runnable {
 	public void run() {
 		Request req = (Request) DataUtils.decode(this.request);
 		
-		this.service.createServerScriptFile(req, ci);
+		this.service.decideMachineAvailable(req, ci);
 	}
 }

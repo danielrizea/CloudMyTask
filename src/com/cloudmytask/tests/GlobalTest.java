@@ -31,6 +31,8 @@ public class GlobalTest {
 		ArrayList<CMTServiceSocketConnectorNIOTCP> nioTcpConnectorList = new ArrayList<CMTServiceSocketConnectorNIOTCP>();
 		ArrayList<CMTServiceSocketConnectorUDP> udpConnectorList = new ArrayList<CMTServiceSocketConnectorUDP>();
 		
+		final String clientID = "client_";
+		
 		for(int i=0;i<GlobalConfig.connections.length;i++){
 			
 			
@@ -45,7 +47,7 @@ public class GlobalTest {
 			MachineInfo machineDescription = new MachineInfo(i, GlobalConfig.connections[i]);
 			// Porneste serviciul de streaming.
 			CMTServiceObject ss = new CMTServiceObject(clientObject,machineDescription);
-			
+			ss.start();
 			serviceObjectList.add(ss);
 			
 			// Porneste connector-ul de socketi.
@@ -76,11 +78,6 @@ public class GlobalTest {
 			//Close the input stream
 			final String data = scriptData;
 
-			Request r = new Request("salut de la", Request.REQUEST_PROCESS_SCRIPT);			
-			r.scriptFileData = scriptData;
-			r.scriptFileName = filename;	
-			System.out.println("Send request");
-			r.requestID = r.hashCode() + "_" + r;
 			//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
 			ArrayList<Thread> clientRequests = new ArrayList<Thread>();
 			for(int i=0;i<4;i++){
@@ -96,6 +93,7 @@ public class GlobalTest {
 						r.scriptFileData = data;
 						r.scriptFileName = filename;	
 						r.requestID = r.hashCode() + "_" + r + "_";
+						r.clientID = clientID;
 						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
 						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
 						System.out.println("Response from server : " + response.message);
@@ -125,6 +123,7 @@ public class GlobalTest {
 						r.scriptFileData = data;
 						r.scriptFileName = filename;	
 						r.requestID = r.hashCode() + "_" + r + "_";
+						r.clientID = clientID;
 						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
 						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
 						System.out.println("Response from server : " + response.message);
@@ -137,7 +136,7 @@ public class GlobalTest {
 			try {
 				Thread.sleep(1000);
 			} catch (Exception e) {}
-			for(int i=0;i<10;i++){
+			for(int i=0;i<4;i++){
 				
 				Thread th = new Thread(new Runnable() {
 					
@@ -150,6 +149,7 @@ public class GlobalTest {
 						r.scriptFileData = data;
 						r.scriptFileName = filename;	
 						r.requestID = r.hashCode() + "_" + r + "_";
+						r.clientID = clientID;
 						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
 						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
 						System.out.println("Response from server : " + response.message);
@@ -163,7 +163,7 @@ public class GlobalTest {
 			try {
 				Thread.sleep(1000);
 			} catch (Exception e) {}
-			for(int i=0;i<10;i++){
+			for(int i=0;i<4;i++){
 				
 				Thread th = new Thread(new Runnable() {
 					
@@ -176,6 +176,7 @@ public class GlobalTest {
 						r.scriptFileData = data;
 						r.scriptFileName = filename;	
 						r.requestID = r.hashCode() + "_" + r + "_";
+						r.clientID = clientID;
 						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
 						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
 						System.out.println("Response from server : " + response.message);
@@ -192,8 +193,6 @@ public class GlobalTest {
 		
 			//CommunicationUtils.sendRequest(r, "localhost", 5001, 60001);
 			
-			Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", 5001, 60001);
-			System.out.println("Response from server : " + response.message);
 		}
 		catch(Exception e){
 			

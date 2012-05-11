@@ -36,5 +36,8 @@ public class GlobalConfig {
 	
 	//  2 porturi comunicare clienti, job-uri + comenzi 7000 + 2*id., 7000 + 2*(id-1).
 	
+	//2 seconds
+	public static int MAX_REQUEST_PERIOD = 1000;
 	
+	public static int MAX_REQUESTS_ALLOWED_IN_PERIOD = 4;
 }

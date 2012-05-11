@@ -5,6 +5,8 @@ import com.cloudmytask.connectors.CallbackInterface;
 
 public interface CMTPublicServiceInterface {
 	
+	public void filterClients(Request request, CallbackInterface ci);
+	
 	public void decodeRequest(byte[] request, CallbackInterface ci);
 		
 	public void decideMachineAvailable(Request request, CallbackInterface ci);

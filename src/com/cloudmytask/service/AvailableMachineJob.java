@@ -13,18 +13,33 @@ public class AvailableMachineJob implements Runnable {
 	private CallbackInterface ci;
 	private MachineInfo machineDescription;
 	private ConcurrentHashMap<String, Request> executingRequests;
-
-	public AvailableMachineJob(CMTPrivateServiceInterface service, Request request, CallbackInterface ci, MachineInfo machineDescription, ConcurrentHashMap<String, Request> executingRequests) {
+	private ConcurrentHashMap<String, Integer> clientsRequests;
+	
+	public AvailableMachineJob(CMTPrivateServiceInterface service, Request request, CallbackInterface ci, MachineInfo machineDescription, ConcurrentHashMap<String, Request> executingRequests, ConcurrentHashMap<String, Integer> clientsRequests) {
 		this.service = service;
 		this.request = request;
 		this.ci = ci;
 		this.machineDescription = machineDescription;
 		this.executingRequests = executingRequests;
+		this.clientsRequests = clientsRequests;
 	}
 	
 	public void run() {
 	
 	
+		//add another request for user
+		int requests = 1;
+		if(clientsRequests.containsKey(request.clientID)){
+			requests = clientsRequests.get(request.clientID);
+			requests++;
+			clientsRequests.replace(request.clientID, requests);
+			System.out.println("[CMTServiceObject "+machineDescription.id+"] info in database ");
+		}
+		else
+			clientsRequests.put(request.clientID, requests);
+		
+		System.out.println("[CMTServiceObject "+machineDescription.id+"] status of requests" + request.clientID + " " + requests);
+		
 		int maxJobs = machineDescription.getMaxJobsInExecution();
 		int currentJobs = executingRequests.size();
 		

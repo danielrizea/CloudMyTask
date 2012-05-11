@@ -11,7 +11,7 @@ import com.cloudmytask.service.client.CMTClientPublicInterface;
 
 public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateServiceInterface {
 	
-	private ExecutorService createScriptFilePool, runScriptOnServerPool, discoverFreeNeighbotPool, jobHandOffPool, decideMachineAvailablePool, processMachineLoadRequestPool, sendResultPool, decodePool;
+	private ExecutorService createScriptFilePool, runScriptOnServerPool, discoverFreeNeighbotPool, jobHandOffPool, decideMachineAvailablePool, processMachineLoadRequestPool, sendResultPool, decodePool, clientFilterPool;
 	
 	private CMTClientPublicInterface clientObjectInterface;
 	
@@ -25,7 +25,13 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	
 	private ConcurrentHashMap<String,Request> requestsProcessed;
 	
+	private ConcurrentHashMap<String, Integer> clientRequestsInPeriod;
+	
+	private ClearRequestsThreadForPeriod clearRequestsThread;
+	
 	public String LOGTag;
+	
+	
 	
 	public CMTServiceObject(CMTClientPublicInterface clientObjectInterface, MachineInfo machineDescription) {
 //TODO -> mare grija cu poolurile de threaduri
@@ -45,6 +51,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		this.discoverFreeNeighbotPool = Executors.newFixedThreadPool(4);
 		this.decideMachineAvailablePool = Executors.newFixedThreadPool(4);
 		this.processMachineLoadRequestPool = Executors.newFixedThreadPool(4);
+		this.clientFilterPool = Executors.newFixedThreadPool(4);
 		
 		//interfaces needed
 		this.clientObjectInterface = clientObjectInterface;
@@ -58,7 +65,12 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		this.requestsWaitingAnswer = new ConcurrentHashMap<String, Request>();
 		//requests that have been processed and the answer is stored
 		this.requestsProcessed = new ConcurrentHashMap<String, Request>();
-
+		// clients that have submitted requests
+		this.clientRequestsInPeriod = new ConcurrentHashMap<String, Integer>();
+		
+		//thread that every period empties clientRequest
+		clearRequestsThread = new ClearRequestsThreadForPeriod(clientRequestsInPeriod);
+		
 		this.LOGTag = "[CMTServiceObjectInstance "+machineDescription.id+"]";
 	}
 	
@@ -71,9 +83,14 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		
 	}
 	
+	public void filterClients(Request request,CallbackInterface ci){
+		
+		this.clientFilterPool.submit(new FilterClientsJob(this, request, ci, clientObjectInterface, machineDescription, clientRequestsInPeriod));
+	}
+	
 	public void decideMachineAvailable(Request request, CallbackInterface ci) {
 		// TODO Auto-generated method stub
-		this.decideMachineAvailablePool.submit(new AvailableMachineJob(this, request, ci, machineDescription, requestsInExecution));
+		this.decideMachineAvailablePool.submit(new AvailableMachineJob(this, request, ci, machineDescription, requestsInExecution, clientRequestsInPeriod));
 	}
 	
 	
@@ -123,11 +140,15 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	// Metode de start si stop.
 	public void start() {
 		// Nothing to do here.
+		clearRequestsThread.start();
+
 	}
 	
 
 	public void stop() {
-
+		
+		clearRequestsThread.stopThread();
+		
 		this.decodePool.shutdown();
 		this.sendResultPool.shutdown(); 
 		this.createScriptFilePool.shutdown();
