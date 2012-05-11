@@ -6,12 +6,15 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.client.Request;
 import com.cloudmytask.client.TCPClient;
 import com.cloudmytask.client.UDPClient;
 import com.cloudmytask.connectors.tcp.CMTServiceSocketConnectorTCP;
 import com.cloudmytask.service.CMTServiceObject;
+import com.cloudmytask.service.MachineInfo;
 import com.cloudmytask.service.client.CMTClientObject;
+import com.cloudmytask.utils.CommunicationUtils;
 
 public class TCPTest {
 
@@ -22,8 +25,11 @@ public class TCPTest {
 		ports[0] = 5000;
 		ports[1] = 5001;
 		
+		MachineInfo machineDescription = new MachineInfo(0, ports);
+		
+		CMTClientObject co = new CMTClientObject();
 		// Porneste serviciul de streaming.
-		CMTServiceObject ss = new CMTServiceObject();
+		CMTServiceObject ss = new CMTServiceObject(co,machineDescription);
 		
 		//ss.start();
 		
@@ -37,7 +43,7 @@ public class TCPTest {
 		ArrayList<TCPClient> al = new ArrayList<TCPClient>();
 		
 		try{
-			String filename = "testscript.py";
+			String filename = "test_sleep.py";
 			//citire script python
 			FileInputStream fstream = new FileInputStream(filename);
 			// Get the object of DataInputStream
@@ -54,16 +60,34 @@ public class TCPTest {
 			}
 			//Close the input stream
 			
-			Request r = new Request("salut de la", 1);			
+
+			Request r = new Request("salut de la", Request.REQUEST_PROCESS_SCRIPT);			
 			r.scriptFileData = scriptData;
 			r.scriptFileName = filename;	
 			System.out.println("Send request");
+			r.requestID = r.hashCode() + "_" + r;
+			//CommunicationUtils.sendRequest(r, "localhost", 5001, 60001);
+			/*
+			for(int i=0;i<3;i++){
+				r = new Request("salut de la", Request.REQUEST_PROCESS_SCRIPT);			
+				r.scriptFileData = scriptData;
+				r.scriptFileName = filename;	
+				System.out.println("Send request");
+				r.requestID = r.hashCode() + "_" + r + "_" + i;
+				CommunicationUtils.sendRequest(r, "localhost", 5001, 60001);
+
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (Exception e) {}
+			*/
+			//CommunicationUtils.sendRequest(r, "localhost", 5001, 60001);
 			
 			Request response = (Request) clientObject.sendRequest(r, "localhost", 5001, 60001);
 			System.out.println("Response from server : " + response.message);
 		}
 		catch(Exception e){
-			
+			System.out.println("Exception " + e.getMessage());
 		}
 
 		

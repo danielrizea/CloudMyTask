@@ -10,8 +10,7 @@ public class SocketConnectorTCPProcessJob implements Runnable{
 	private CMTPublicServiceInterface ssi;
 	private SocketConnectorTCPCallbackObject scco;
 	
-	// pool de threaduri care se ocupa de procesarea cererii
-	private ExecutorService processPool;
+
 	private Request request;
 	public SocketConnectorTCPProcessJob(CMTPublicServiceInterface ssi, SocketConnectorTCPCallbackObject scco, Request request) {
 
@@ -25,17 +24,14 @@ public class SocketConnectorTCPProcessJob implements Runnable{
 		// TODO Auto-generated method stub
 		
 		
-		if (request.type == 1) {
-			//StreamObject sobj = request.sobj;
-			//upload
-			//this.ssi.uploadStreamObject(sobj.name, sobj, scco);
-			//this.ssi.testRequest(request, scco);
-			this.ssi.createServerScriptFile(request, scco);
+		if (request.type == Request.REQUEST_PROCESS_SCRIPT) {
+			//decide if job to be executed on this machine or on others based on load
+			this.ssi.decideMachineAvailable(request, scco);
 			
 			System.out.println("Request submited to service ");
-		} else if (request.type == 2) {
-			//getList
-			//this.ssi.getStreamObjectList(scco,request.clientId);
+		} else if (request.type == Request.REQUEST_GET_LOAD) {
+			//get the machine load
+			this.ssi.processMachineLoadRequest(request, scco);
 		} else if (request.type == 3) {
 			//getFrame
 			//this.ssi.getStreamObjectFrames(request.name, scco,request.clientId);

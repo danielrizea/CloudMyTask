@@ -10,6 +10,7 @@ import com.cloudmytask.client.Request;
 import com.cloudmytask.client.UDPClient;
 import com.cloudmytask.connectors.udp.CMTServiceSocketConnectorUDP;
 import com.cloudmytask.service.CMTServiceObject;
+import com.cloudmytask.service.MachineInfo;
 import com.cloudmytask.service.client.CMTClientObject;
 
 public class UDPTest {
@@ -22,7 +23,11 @@ public class UDPTest {
 		ports[1] = 5001;
 		
 		// Porneste serviciul de streaming.
-		CMTServiceObject ss = new CMTServiceObject();
+		MachineInfo machineDescription = new MachineInfo(0, ports);
+		
+		CMTClientObject co = new CMTClientObject();
+		// Porneste serviciul de streaming.
+		CMTServiceObject ss = new CMTServiceObject(co,machineDescription);
 		
 		//ss.start();
 		
@@ -54,7 +59,8 @@ public class UDPTest {
 			
 			Request r = new Request("salut de la", 1);			
 			r.scriptFileData = scriptData;
-			r.scriptFileName = filename;	
+			r.scriptFileName = filename;
+			r.requestID = "id";
 			System.out.println("Send request");
 			
 			Request response = (Request)clientObject.sendRequest(r, "localhost", 5000, 60001);

@@ -1,5 +1,6 @@
 package com.cloudmytask.service;
 
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -10,158 +11,146 @@ import com.cloudmytask.service.client.CMTClientPublicInterface;
 
 public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateServiceInterface {
 	
-	private ExecutorService decryptPool, decodePool, searchCachedResultPool, computeGCDPool, sendResultPool, cacheResultPool;
-
-	private ExecutorService createScriptFilePool, runScriptOnServerPool, jobHandOffPool;
+	private ExecutorService createScriptFilePool, runScriptOnServerPool, discoverFreeNeighbotPool, jobHandOffPool, decideMachineAvailablePool, processMachineLoadRequestPool, sendResultPool, decodePool;
 	
 	private CMTClientPublicInterface clientObjectInterface;
 	
-	private MachineDescription machineDescription;
+	private MachineInfo machineDescription;
 	
-	public CMTServiceObject(CMTClientPublicInterface clientObjectInterface, MachineDescription machineDescription) {
+	// execution on local machine
+	private ConcurrentHashMap<String,Request> requestsInExecution;
+	
+	//execution on distributed machine in cloud
+	private ConcurrentHashMap<String,Request> requestsWaitingAnswer;
+	
+	private ConcurrentHashMap<String,Request> requestsProcessed;
+	
+	public String LOGTag;
+	
+	public CMTServiceObject(CMTClientPublicInterface clientObjectInterface, MachineInfo machineDescription) {
 //TODO -> mare grija cu poolurile de threaduri
 		//cache service client
 //TODO: getInterface details
 
-		this.decryptPool = Executors.newFixedThreadPool(2);
+
 		this.decodePool = Executors.newFixedThreadPool(3);
-		this.searchCachedResultPool = Executors.newFixedThreadPool(1);
-		this.computeGCDPool = Executors.newFixedThreadPool(3);
 		this.sendResultPool = Executors.newFixedThreadPool(2);
-		this.cacheResultPool = Executors.newFixedThreadPool(1);
+
 		
 		//TODO parametrizare
 		this.createScriptFilePool = Executors.newFixedThreadPool(4);
-		this.runScriptOnServerPool = Executors.newFixedThreadPool(4);
+		//max jobs = number of threads available
+		this.runScriptOnServerPool = Executors.newFixedThreadPool(machineDescription.getMaxJobsInExecution());
 		this.jobHandOffPool = Executors.newFixedThreadPool(4);
+		this.discoverFreeNeighbotPool = Executors.newFixedThreadPool(4);
+		this.decideMachineAvailablePool = Executors.newFixedThreadPool(4);
+		this.processMachineLoadRequestPool = Executors.newFixedThreadPool(4);
 		
+		//interfaces needed
 		this.clientObjectInterface = clientObjectInterface;
 		this.machineDescription = machineDescription;
+		
+		//queue's to store state
+		
+		//requests that are currently executing
+		this.requestsInExecution = new ConcurrentHashMap<String, Request>();
+		//requests that have been passed to other service instances
+		this.requestsWaitingAnswer = new ConcurrentHashMap<String, Request>();
+		//requests that have been processed and the answer is stored
+		this.requestsProcessed = new ConcurrentHashMap<String, Request>();
+
+		this.LOGTag = "[CMTServiceObjectInstance "+machineDescription.id+"]";
 	}
 	
 
 	public void decodeRequest(byte[] request, CallbackInterface ci) {
 
-		System.out.println("[CMTerviceObject] S-a primit o cerere de decode (ci=" + ci + ") => trimit cerere de decode");
+		System.out.println(LOGTag + "S-a primit o cerere de decode (ci=" + ci + ") => trimit cerere de decode");
 		
 		this.decodePool.submit(new DecodeJob(this, request, ci));
 		
 	}
-
 	
-//TODO: nu mai avem nevoie
-	// Metoda apelata la primirea unei cereri de la un client.
-	public void computeGCDRequest(byte[] request, CallbackInterface ci) {
-		System.out.println("[CMTerviceObject] S-a primit o cerere de la un client (ci=" + ci + ") => trimit cerere de decriptare");
-		//this.decryptPool.submit(new DecryptJob(this, request, ci));
-	}
-	
-	public void computeGCDRequest(Request request, CallbackInterface ci) {
-		System.out.println("[CMTServiceObject] S-a primit o cerere de la un client (ci=" + ci + ") => trimit cerere de decriptare");
-		//this.decryptPool.submit(new DecryptJob(this, request, ci));
-	}
-	
-
-	public void testRequest(Request request, CallbackInterface ci) {
+	public void decideMachineAvailable(Request request, CallbackInterface ci) {
 		// TODO Auto-generated method stub
-		System.out.println("[CMTServiceObject] S-a primit o cerere de la un client (ci=" + ci + ") =>  cu mesajul " + request.message  + " req id" + request.type);
-	}
-
-	public void computeCMTRequest(byte[] request, CallbackInterface ci) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public void computeCMTRequest(Request request, CallbackInterface ci) {
-		// TODO Auto-generated method stub
-		
+		this.decideMachineAvailablePool.submit(new AvailableMachineJob(this, request, ci, machineDescription, requestsInExecution));
 	}
 	
 	
 	public void createServerScriptFile(Request request,
 			CallbackInterface ci) {
 		
-		System.out.println("[CMTServiceObject] S-a primit o cerere de creare script local (ci=" + ci + ")");
+		System.out.println(LOGTag + " S-a primit o cerere de creare script local (ci=" + ci + ") request" + request);
 		
 		this.createScriptFilePool.submit(new CreateServerScriptJob(this, request, ci));
 		
 	}
 	
 
-	public void runScriptOnServver(Request request, String filename,
+	public void runScriptOnServer(Request request, String filename,
 			CallbackInterface ci) {
 
-		System.out.println("[CMTServiceObject] S-a primit o cerere de executie script pe server   (ci=" + ci + ")");
+		System.out.println(LOGTag + " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
 	
-		this.runScriptOnServerPool.submit(new RunScriptOnServerJob(this, request, filename, ci));
+		this.runScriptOnServerPool.submit(new RunScriptOnServerJob(this, request, filename, ci,machineDescription, requestsInExecution));
 	}
-	
-	
-	public void jobHandOff(Request request, CallbackInterface ci) {
+
+
+	public void getFreeNeighbor(Request request, CallbackInterface ci) {
 		// TODO Auto-generated method stub
-		System.out.println("[CMTServiceObject] start job hand-off");
+		this.discoverFreeNeighbotPool.submit(new DiscoverFreeNeighborJob(this, request, ci, clientObjectInterface, machineDescription));
+	}
+	
+	public void sendAnswerToClient(Request request, CallbackInterface ci){
 		
-		this.jobHandOffPool.submit(new HandOffJob(this, request, ci, machineDescription));
+		this.sendResultPool.submit(new SendAnswerToClientJob(this,request,ci,requestsProcessed));
 	}
 	
-//
-	/*
-	// Metode apelate de catre thread-urile din pool-uri.
-	public void decodeRequest(byte[] request, CallbackInterface ci) {
-		System.out.println("[GCDServiceObject] S-a primit o cerere de decodificare de la un thread de decriptare (ci=" + ci + ")");
-		this.decodePool.submit(new DecodeJob(this, request, ci));
+	public void jobHandOff(Request request, CallbackInterface ci, int machineID) {
+		// TODO Auto-generated method stub
+		System.out.println(LOGTag + " start job hand-off");
+		
+		this.jobHandOffPool.submit(new HandOffJob(this, request, ci, clientObjectInterface, machineDescription, machineID, requestsWaitingAnswer));
 	}
-//metode de interpretat: decide action
+	
 
-	
-	
-	public void searchCachedResultRequest(Request req, CallbackInterface ci) {
-		System.out.println("[GCDServiceObject] S-a primit o cerere de cautare a unui rezultat cached de la un thread de decodificare (ci=" + ci + ")");		
-		this.searchCachedResultPool.submit(new SearchCachedResultJob(this, req, this.csc, ci));
+	public void processMachineLoadRequest(Request request, CallbackInterface ci) {
+		// TODO Auto-generated method stub
+		
+		this.processMachineLoadRequestPool.submit(new ProcessMachineLoadRequestJob(this, request, ci, machineDescription, requestsInExecution));
 	}
-
-	public void computeGCDRequest(Request req, CallbackInterface ci) {
-		System.out.println("[GCDServiceObject] S-a primit o cerere de calcul al GCD-ului de la un thread de cautare a unui rezultat cached (req=" + req.numbers + "; ci=" + ci + ")");
-		this.computeGCDPool.submit(new ComputeGCDJob(this, req, ci));
-	}
-	
-	public void sendResultRequest(Integer result, CallbackInterface ci) {
-		System.out.println("[GCDServiceObject] S-a primit o cerere de trimitere a rezultatului catre client (ci=" + ci + ")");				
-		this.sendResultPool.submit(new SendResultJob(this, result, ci));
-	}
-	
-	public void cacheResultRequest(Request req, Integer result, CallbackInterface ci) {
-		System.out.println("[GCDServiceObject] S-a primit o cerere de cache-uire a rezultatului de la un thread de calcul al GCD-ului (result=" + result + "; ci=" + ci + ")");
-		this.cacheResultPool.submit(new CacheResultJob(req, result, this.csc));		
-	}
-
-	*/
 	
 	// Metode de start si stop.
 	public void start() {
 		// Nothing to do here.
 	}
 	
+
 	public void stop() {
-		this.decryptPool.shutdown();
+
 		this.decodePool.shutdown();
-		this.searchCachedResultPool.shutdown();
-		this.computeGCDPool.shutdown();
-		this.sendResultPool.shutdown();
-		this.cacheResultPool.shutdown();
+		this.sendResultPool.shutdown(); 
+		this.createScriptFilePool.shutdown();
+		this.runScriptOnServerPool.shutdown();  
+		this.jobHandOffPool.shutdown(); 
+		this.discoverFreeNeighbotPool.shutdown(); 
+		this.decideMachineAvailablePool.shutdown(); 
+		this.processMachineLoadRequestPool.shutdown();
 		
 		try {
-			this.decryptPool.awaitTermination(100000, TimeUnit.MILLISECONDS);
 			this.decodePool.awaitTermination(100000, TimeUnit.MILLISECONDS);
-			this.searchCachedResultPool.awaitTermination(100000, TimeUnit.MILLISECONDS);
-			this.computeGCDPool.awaitTermination(100000, TimeUnit.MILLISECONDS);
-			this.cacheResultPool.awaitTermination(100000, TimeUnit.MILLISECONDS);
+			this.sendResultPool.awaitTermination(100000, TimeUnit.MILLISECONDS); 
+			this.createScriptFilePool.awaitTermination(100000, TimeUnit.MILLISECONDS);
+			this.runScriptOnServerPool.awaitTermination(100000, TimeUnit.MILLISECONDS);  
+			this.jobHandOffPool.awaitTermination(100000, TimeUnit.MILLISECONDS); 
+			this.discoverFreeNeighbotPool.awaitTermination(100000, TimeUnit.MILLISECONDS); 
+			this.decideMachineAvailablePool.awaitTermination(100000, TimeUnit.MILLISECONDS); 
+			this.processMachineLoadRequestPool.awaitTermination(100000, TimeUnit.MILLISECONDS);
+
 		} catch (Exception e) {
 			System.err.println("[GCDServiceObject] Eroare la awaitTermination: " + e);
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
+
 }

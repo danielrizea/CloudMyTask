@@ -38,6 +38,6 @@ public class CreateServerScriptJob implements Runnable {
 			  }
 		
 		//trimite la urmatoarea etapa
-		this.service.runScriptOnServver(request, filename, ci);
+		this.service.runScriptOnServer(request, filename, ci);
 	}
 }

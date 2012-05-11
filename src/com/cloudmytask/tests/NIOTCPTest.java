@@ -12,6 +12,7 @@ import com.cloudmytask.client.TCPClient;
 import com.cloudmytask.connectors.tcp.CMTServiceSocketConnectorTCP;
 import com.cloudmytask.connectors.tcpnio.CMTServiceSocketConnectorNIOTCP;
 import com.cloudmytask.service.CMTServiceObject;
+import com.cloudmytask.service.MachineInfo;
 import com.cloudmytask.service.client.CMTClientObject;
 
 public class NIOTCPTest {
@@ -24,7 +25,11 @@ public class NIOTCPTest {
 		ports[1] = 5005;
 		
 		// Porneste serviciul de streaming.
-		CMTServiceObject ss = new CMTServiceObject();
+		MachineInfo machineDescription = new MachineInfo(0, ports);
+		
+		CMTClientObject co = new CMTClientObject();
+		// Porneste serviciul de streaming.
+		CMTServiceObject ss = new CMTServiceObject(co,machineDescription);
 		ss.start();
 
 
@@ -53,9 +58,10 @@ public class NIOTCPTest {
 			}
 			//Close the input stream
 			
-			Request r = new Request("salut de la", 1);			
+			Request r = new Request("salut de la", Request.REQUEST_PROCESS_SCRIPT);			
 			r.scriptFileData = scriptData;
 			r.scriptFileName = filename;	
+			r.requestID = "id";
 			System.out.println("Send request");
 			
 			Request response = (Request) clientObject.sendRequest(r, "localhost", 5004, 60001);
