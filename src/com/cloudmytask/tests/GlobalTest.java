@@ -136,7 +136,7 @@ public class GlobalTest {
 						r.scriptFileData = data;
 						r.scriptFileName = filename;	
 						r.requestID = r.hashCode() + "_" + r + "_";
-						r.clientID = clientID;
+						r.clientID = clientID+1;
 						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
 						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
 						System.out.println("Response from server : " + response.message);
@@ -162,7 +162,7 @@ public class GlobalTest {
 						r.scriptFileData = data;
 						r.scriptFileName = filename;	
 						r.requestID = r.hashCode() + "_" + r + "_";
-						r.clientID = clientID;
+						r.clientID = clientID+2;
 						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
 						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
 						System.out.println("Response from server : " + response.message);
@@ -189,7 +189,7 @@ public class GlobalTest {
 						r.scriptFileData = data;
 						r.scriptFileName = filename;	
 						r.requestID = r.hashCode() + "_" + r + "_";
-						r.clientID = clientID;
+						r.clientID = clientID+3;
 						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
 						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
 						System.out.println("Response from server : " + response.message);

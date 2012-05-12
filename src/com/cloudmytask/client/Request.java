@@ -26,13 +26,13 @@ public class Request implements Serializable {
 	
 	
 		// req pentru a verifica daca un client e banned
-		public static final int R_IS_BANNED = 4;
+		public static final int R_IS_BANNED = 6;
 		// req pentru a adauga un client la lista de banned
-		public static final int R_ADD_BANNED = 5;
+		public static final int R_ADD_BANNED = 7;
 		// req pentru a face update a starii unei masini (s-a eliberat, este busy etc)
-		public static final int R_UPDATE_STATUS = 6;
+		public static final int R_UPDATE_STATUS = 8;
 		// req pentru a afla care din vecini e available pentru a-i pasa job
-		public static final int R_GET_AVAILABLE = 7;
+		public static final int R_GET_AVAILABLE = 9;
 
 		// va fi setat pentru a informa masina centrala de gradul de load al instanteti
 		public Integer state;

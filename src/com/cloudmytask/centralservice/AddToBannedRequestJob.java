@@ -22,7 +22,7 @@ public class AddToBannedRequestJob implements Runnable {
 	public void run() {
 	
 		
-		System.out.println("[CentralServiceInstance] add client to banned list " + request.clientID);
+		System.out.println("[CentralServiceInstance] add client to banned list " + request.clientID + " " + request.message);
 		try {
 			// se adauga la bannedList clientul respectiv
 			//!!!! consider ca in message vor fi date informatii extra pentru cereri 

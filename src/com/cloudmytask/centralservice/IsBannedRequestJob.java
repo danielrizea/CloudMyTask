@@ -26,8 +26,8 @@ public class IsBannedRequestJob implements Runnable {
 	public void run() {
 
 		try {
-			boolean ok = bannedList.containsKey(request.clientID);
-			System.out.println("[CentralServiceInstance] client " + request.clientID + " is " + ok);
+
+			System.out.println("[CentralServiceInstance] client " + request.clientID + " is " + bannedList.containsKey(request.clientID) + " " + request.message);
 				if(bannedList.containsKey(request.clientID)){
 						request.bannedInfo = true;
 						ci.sendResult(request);
@@ -36,6 +36,7 @@ public class IsBannedRequestJob implements Runnable {
 					request.bannedInfo = false;
 					ci.sendResult(request);					
 				}
+				System.out.println("[CentralServiceInstance] after client " + request.clientID + " is " + bannedList.containsKey(request.clientID));
 		}
 		
 		catch (Exception e) {

@@ -32,10 +32,10 @@ public class EvaluateRequestJob implements Runnable {
 			// in functie de tipul de request se va face procesarea necesara
 			switch(request.type)
 			{
-				case Request.R_IS_BANNED: service.processIsBannedRequest(request, ci);
-				case Request.R_ADD_BANNED: service.processAddToBannedRequest(request, ci);
-				case Request.R_UPDATE_STATUS: service.processUpdateStatusRequest(request, ci);
-				case Request.R_GET_AVAILABLE: service.processGetAvailableRequest(request, ci);
+				case Request.R_IS_BANNED: service.processIsBannedRequest(request, ci); break;
+				case Request.R_ADD_BANNED: service.processAddToBannedRequest(request, ci); break;
+				case Request.R_UPDATE_STATUS: service.processUpdateStatusRequest(request, ci); break;
+				case Request.R_GET_AVAILABLE: service.processGetAvailableRequest(request, ci); break;
 			}
 		}
 		

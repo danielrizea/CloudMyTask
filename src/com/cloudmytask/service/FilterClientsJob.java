@@ -35,12 +35,13 @@ public class FilterClientsJob implements Runnable {
 		
 		Request isBann = new Request("is client banned", Request.R_IS_BANNED);
 		isBann.clientID = request.clientID;
+
 		int clientPort = 6500 + machineInfo.id + port_id;
 		port_id++;
 		
 		Request response = (Request)CommunicationUtils.sendUDPRequestGetResponse(isBann, GlobalConfig.CENTRAL_UNIT_IP, GlobalConfig.CENTRAL_UNIT_PORT, clientPort);
 		
-		{
+		if(response.bannedInfo == false){
 		
 			
 			if(clientsRequests.containsKey(request.clientID)){
@@ -52,14 +53,14 @@ public class FilterClientsJob implements Runnable {
 					answer.requestID = answer.hashCode() + "_answer";
 					System.out.println("[CMTServiceObject "+machineInfo.id+"] filter client " + request.clientID);
 					this.service.sendAnswerToClient(answer, ci);
-					/*
+					
 					Request addBann = new Request("add client to bann list", Request.R_ADD_BANNED);
 					
 					addBann.clientID = request.clientID;
 					clientPort = 5500 + machineInfo.id + port_id;
 					port_id++;
 					response = (Request)CommunicationUtils.sendUDPRequestGetResponse(addBann, GlobalConfig.CENTRAL_UNIT_IP, GlobalConfig.CENTRAL_UNIT_PORT, clientPort);
-					*/
+					
 				}
 				else{
 					this.service.decideMachineAvailable(request, ci);
@@ -68,6 +69,11 @@ public class FilterClientsJob implements Runnable {
 			else
 				this.service.decideMachineAvailable(request, ci);
 			
+		}
+		else
+		{
+			Request respone = new Request("you are banned", Request.REQUEST_PROCESS_SCRIPT);
+			ci.sendResult(response);
 		}
 	}
 }

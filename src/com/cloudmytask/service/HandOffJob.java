@@ -36,7 +36,10 @@ public class HandOffJob implements Runnable {
 		int serverPort = GlobalConfig.INSTANCE_COMM_PORT + machineID;
 		int clientPort = GlobalConfig.MACHINE_LOCAL_PORT + machineID;
 	
+		
 		redirectedRequests.put(request.requestID, request);
+		//request fro another service instance
+		request.type = Request.REQUEST_PASS_SCRIPT;
 		Request answer = (Request)this.clientInterface.sendRequest(request, serverIP, serverPort, clientPort);
 		
 		//send result
