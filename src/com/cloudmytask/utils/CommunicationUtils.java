@@ -106,7 +106,7 @@ public class CommunicationUtils {
 		}
 	}
 		
-	private static Object sendTCPRequestGetResponse(Request request, String serverIP, int serverPort) {
+	public static Object sendTCPRequestGetResponse(Request request, String serverIP, int serverPort) {
 
 		Socket clientSocket=null;
 		Request response = null;
@@ -141,7 +141,7 @@ public class CommunicationUtils {
 	}
 
 
-	private static Object sendUDPRequestGetResponse(Request request, String serverIP,
+	public static Object sendUDPRequestGetResponse(Request request, String serverIP,
 			int serverPort, int clientPort) {
 		
 		
@@ -190,7 +190,7 @@ public class CommunicationUtils {
 	}
 
 
-	private static Object sendNIOTCPRequestGetResponse(Request request, String serverIP,
+	public static Object sendNIOTCPRequestGetResponse(Request request, String serverIP,
 			int serverPort) {
 		
 		Socket clientSocket = null;

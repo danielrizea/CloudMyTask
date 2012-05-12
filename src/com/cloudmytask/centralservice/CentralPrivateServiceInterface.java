@@ -8,16 +8,16 @@ import com.cloudmytask.connectors.CallbackInterface;
 public interface CentralPrivateServiceInterface {
 	
 	// se face procesarea requestului de verificare daca un client e in banned
-	public void processIsBannedRequest(Request request, HashMap<String, Boolean> bannedList, CallbackInterface ci);
+	public void processIsBannedRequest(Request request, CallbackInterface ci);
 	
 	// se face procesarea req de adaugare a unui client in banned
-	public void processAddToBannedRequest(Request request, HashMap<String, Boolean> bannedList, CallbackInterface ci);
+	public void processAddToBannedRequest(Request request, CallbackInterface ci);
 	
 	// se face procesarea req de update a starii masinii
-	public void processUpdateStatusRequest(Request request, HashMap<String, Integer> loadList, CallbackInterface ci);
+	public void processUpdateStatusRequest(Request request,  CallbackInterface ci);
 	
 	// se face procesarea req de verificare carui vecin i se poate pasa cererea 
-	public void processGetAvailableRequest(Request request, HashMap<String, Integer> loadList, CallbackInterface ci);
+	public void processGetAvailableRequest(Request request, CallbackInterface ci);
 	
 	//public void testRequest(Request request, CallbackInterface ci);
 	

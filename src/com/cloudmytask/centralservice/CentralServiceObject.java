@@ -1,9 +1,9 @@
 package com.cloudmytask.centralservice;
 
 import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 import com.cloudmytask.client.Request;
 import com.cloudmytask.connectors.CallbackInterface;
@@ -16,14 +16,14 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 	private ExecutorService processGetAvailableRequestsPool, processUpdateStatusRequestsPool;
 	
 	// hashmap cu clientii ce trimit scripturi care sunt banned 
-	private HashMap<String, Boolean> bannedList;
-	private HashMap<String, Integer> loadList;
+	private ConcurrentHashMap<String, Boolean> bannedList;
+	private ConcurrentHashMap<String, Integer> loadList;
 	
 	
 	public CentralServiceObject() {
 
-		bannedList = new HashMap<String, Boolean>();
-		loadList = new HashMap<String, Integer>();
+		bannedList = new ConcurrentHashMap<String, Boolean>();
+		loadList = new ConcurrentHashMap<String, Integer>();
 		
 		//TODO parametrizare
 		this.evaluateRequestsPool = Executors.newFixedThreadPool(4);
@@ -43,14 +43,14 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 		this.evaluateRequestsPool.submit(erj);
 	}
 
-	public void processAddToBannedRequest(Request request, HashMap<String, Boolean> bannedList, CallbackInterface ci) {
+	public void processAddToBannedRequest(Request request,  CallbackInterface ci) {
 		// TODO Auto-generated method stub
 		AddToBannedRequestJob erj = new AddToBannedRequestJob(this, bannedList, request, ci);
 		
 		this.processAddToBannedRequestsPool.submit(erj);
 	}
 
-	public void processGetAvailableRequest(Request request, HashMap<String, Integer> loadList, CallbackInterface ci) {
+	public void processGetAvailableRequest(Request request,  CallbackInterface ci) {
 		// TODO Auto-generated method stub
 		
 		GetAvailableRequestJob erj = new GetAvailableRequestJob(this, loadList, request, ci);
@@ -58,14 +58,14 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 		this.processGetAvailableRequestsPool.submit(erj);
 	}
 
-	public void processIsBannedRequest(Request request, HashMap<String, Boolean> bannedList, CallbackInterface ci) {
+	public void processIsBannedRequest(Request request, CallbackInterface ci) {
 		// TODO Auto-generated method stub
 		IsBannedRequestJob erj = new IsBannedRequestJob(this, bannedList, request, ci);
 		
 		this.processIsBannedRequestsPool.submit(erj);	
 	}
 
-	public void processUpdateStatusRequest(Request request, HashMap<String, Integer> loadList, CallbackInterface ci) {
+	public void processUpdateStatusRequest(Request request, CallbackInterface ci) {
 		// TODO Auto-generated method stub
 		UpdateStatusRequestJob erj = new UpdateStatusRequestJob(this, loadList, request, ci);
 		

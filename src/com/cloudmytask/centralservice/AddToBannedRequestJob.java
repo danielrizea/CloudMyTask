@@ -1,9 +1,6 @@
 package com.cloudmytask.centralservice;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.cloudmytask.client.Request;
 import com.cloudmytask.connectors.CallbackInterface;
@@ -12,10 +9,10 @@ public class AddToBannedRequestJob implements Runnable {
 	private CentralPrivateServiceInterface service;
 	private Request request;
 	private CallbackInterface ci;
-	HashMap<String, Boolean> bannedList;
+	private ConcurrentHashMap<String, Boolean> bannedList;
 
 
-	public AddToBannedRequestJob(CentralPrivateServiceInterface service, HashMap<String, Boolean> bannedList, Request request, CallbackInterface ci) {
+	public AddToBannedRequestJob(CentralPrivateServiceInterface service, ConcurrentHashMap<String, Boolean> bannedList, Request request, CallbackInterface ci) {
 		this.service = service;
 		this.request = request;
 		this.ci = ci;
@@ -24,11 +21,14 @@ public class AddToBannedRequestJob implements Runnable {
 	
 	public void run() {
 	
+		
+		System.out.println("[CentralServiceInstance] add client to banned list " + request.clientID);
 		try {
 			// se adauga la bannedList clientul respectiv
 			//!!!! consider ca in message vor fi date informatii extra pentru cereri 
-			bannedList.put(request.message, true);
-			
+			bannedList.put(request.clientID, true);
+			request.message = "client added to banned list";
+			ci.sendResult(request);
 		}
 		
 		catch (Exception e) {

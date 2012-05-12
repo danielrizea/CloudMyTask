@@ -44,4 +44,6 @@ public class GlobalConfig {
 	//portul pe care asculta masina centrala
 	public static int CENTRAL_UNIT_PORT = 30000;
 	
+	public static String CENTRAL_UNIT_IP = "localhost";
+	
 }
