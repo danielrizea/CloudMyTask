@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.cloudmytask.GlobalConfig;
+import com.cloudmytask.centralservice.CentralServiceObject;
+import com.cloudmytask.centralservice.CentralServiceSocketConnectorUDP;
 import com.cloudmytask.client.Request;
 import com.cloudmytask.client.TCPClient;
 import com.cloudmytask.connectors.tcp.CMTServiceSocketConnectorTCP;
@@ -33,6 +35,15 @@ public class GlobalTest {
 		
 		final String clientID = "client_";
 		
+		
+		int central_ports[] = new int[1];
+		central_ports[0] = GlobalConfig.CENTRAL_UNIT_PORT;
+		
+		//start central service
+		CentralServiceObject centralService = new CentralServiceObject();
+		CentralServiceSocketConnectorUDP centralConnector = new CentralServiceSocketConnectorUDP(centralService, central_ports);
+		centralConnector.start();
+		
 		for(int i=0;i<GlobalConfig.connections.length;i++){
 			
 			
@@ -46,7 +57,7 @@ public class GlobalTest {
 					
 			MachineInfo machineDescription = new MachineInfo(i, GlobalConfig.connections[i]);
 			// Porneste serviciul de streaming.
-			CMTServiceObject ss = new CMTServiceObject(clientObject,machineDescription);
+			CMTServiceObject ss = new CMTServiceObject(clientObject,machineDescription,centralService);
 			ss.start();
 			serviceObjectList.add(ss);
 			
@@ -60,6 +71,8 @@ public class GlobalTest {
 
 
 		try{
+			
+			
 			final String filename = "test_sleep.py";
 			//citire script python
 			FileInputStream fstream = new FileInputStream(filename);

@@ -6,6 +6,9 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import com.cloudmytask.GlobalConfig;
+import com.cloudmytask.centralservice.CentralServiceObject;
+import com.cloudmytask.centralservice.CentralServiceSocketConnectorUDP;
 import com.cloudmytask.client.NIOTCPClient;
 import com.cloudmytask.client.Request;
 import com.cloudmytask.client.TCPClient;
@@ -20,6 +23,14 @@ public class NIOTCPTest {
 	
 	public static void main(String args[]){
 		
+		int central_ports[] = new int[1];
+		central_ports[0] = GlobalConfig.CENTRAL_UNIT_PORT;
+		//start central service
+		CentralServiceObject centralService = new CentralServiceObject();
+		CentralServiceSocketConnectorUDP centralConnector = new CentralServiceSocketConnectorUDP(centralService, central_ports);
+		centralConnector.start();
+		
+		
 		int ports[] = new int[2];
 		ports[0] = 5004;
 		ports[1] = 5005;
@@ -29,7 +40,7 @@ public class NIOTCPTest {
 		
 		CMTClientObject co = new CMTClientObject();
 		// Porneste serviciul de streaming.
-		CMTServiceObject ss = new CMTServiceObject(co,machineDescription);
+		CMTServiceObject ss = new CMTServiceObject(co,machineDescription,centralService);
 		ss.start();
 
 

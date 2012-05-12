@@ -7,6 +7,8 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.cloudmytask.GlobalConfig;
+import com.cloudmytask.centralservice.CentralServiceObject;
+import com.cloudmytask.centralservice.CentralServiceSocketConnectorUDP;
 import com.cloudmytask.client.Request;
 import com.cloudmytask.client.TCPClient;
 import com.cloudmytask.client.UDPClient;
@@ -20,6 +22,12 @@ public class TCPTest {
 
 	
 	public static void main(String args[]){
+		int central_ports[] = new int[1];
+		central_ports[0] = GlobalConfig.CENTRAL_UNIT_PORT;
+		//start central service
+		CentralServiceObject centralService = new CentralServiceObject();
+		CentralServiceSocketConnectorUDP centralConnector = new CentralServiceSocketConnectorUDP(centralService, central_ports);
+		centralConnector.start();
 		
 		int ports[] = new int[2];
 		ports[0] = 5000;
@@ -29,7 +37,7 @@ public class TCPTest {
 		
 		CMTClientObject co = new CMTClientObject();
 		// Porneste serviciul de streaming.
-		CMTServiceObject ss = new CMTServiceObject(co,machineDescription);
+		CMTServiceObject ss = new CMTServiceObject(co,machineDescription,centralService);
 		
 		//ss.start();
 		

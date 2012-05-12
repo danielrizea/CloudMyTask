@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import com.cloudmytask.centralservice.CentralPublicServiceInterface;
 import com.cloudmytask.client.Request;
 import com.cloudmytask.connectors.CallbackInterface;
 import com.cloudmytask.service.client.CMTClientPublicInterface;
@@ -14,6 +15,8 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	private ExecutorService createScriptFilePool, runScriptOnServerPool, discoverFreeNeighbotPool, jobHandOffPool, decideMachineAvailablePool, processMachineLoadRequestPool, sendResultPool, decodePool, clientFilterPool;
 	
 	private CMTClientPublicInterface clientObjectInterface;
+	
+	private CentralPublicServiceInterface centralInterface;
 	
 	private MachineInfo machineDescription;
 	
@@ -33,10 +36,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	
 	
 	
-	public CMTServiceObject(CMTClientPublicInterface clientObjectInterface, MachineInfo machineDescription) {
-//TODO -> mare grija cu poolurile de threaduri
-		//cache service client
-//TODO: getInterface details
+	public CMTServiceObject(CMTClientPublicInterface clientObjectInterface, MachineInfo machineDescription, CentralPublicServiceInterface centralInterface) {
 
 
 		this.decodePool = Executors.newFixedThreadPool(3);
@@ -56,7 +56,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		//interfaces needed
 		this.clientObjectInterface = clientObjectInterface;
 		this.machineDescription = machineDescription;
-		
+		this.centralInterface = centralInterface;
 		//queue's to store state
 		
 		//requests that are currently executing

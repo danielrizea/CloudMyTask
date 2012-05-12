@@ -40,4 +40,8 @@ public class GlobalConfig {
 	public static int MAX_REQUEST_PERIOD = 1000;
 	
 	public static int MAX_REQUESTS_ALLOWED_IN_PERIOD = 4;
+	
+	//portul pe care asculta masina centrala
+	public static int CENTRAL_UNIT_PORT = 30000;
+	
 }
