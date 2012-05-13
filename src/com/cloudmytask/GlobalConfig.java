@@ -8,6 +8,8 @@ public class GlobalConfig {
 
 	public static int CommunicationType = TCP;
 	
+
+	
 	// 1 marcheaza conexiunea
 	public static int connections[][]= {
 		
@@ -45,5 +47,8 @@ public class GlobalConfig {
 	public static int CENTRAL_UNIT_PORT = 30000;
 	
 	public static String CENTRAL_UNIT_IP = "localhost";
+	
+	
+	
 	
 }
