@@ -8,7 +8,7 @@ import java.net.MulticastSocket;
 public class MulticastClientHandler implements MulticastClientPublicInterface{
 	private MulticastSocket socket;
 	private InetAddress groupAddr;
-	DatagramPacket packet;
+	private DatagramPacket packet;
 
 	public MulticastClientHandler(MulticastSocket socket, InetAddress groupAddr) {
 		super();
@@ -16,10 +16,12 @@ public class MulticastClientHandler implements MulticastClientPublicInterface{
 		this.groupAddr = groupAddr;
 	}
 
-	public byte[] receivePacketData(byte[] data) throws IOException {
-		this.packet = new DatagramPacket(data, data.length);
+	public DatagramPacket receivePacketData() throws IOException {
+		byte[] receiveBuffer = new byte[16384];
+		this.packet = new DatagramPacket(receiveBuffer,receiveBuffer.length);
 		socket.receive(packet);
-		return this.packet.getData();
+		//return this.packet.getData();
+		return this.packet;
 	}
 
 	public void registerForGroup(MulticastGroup group) throws IOException {

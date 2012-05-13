@@ -1,5 +1,6 @@
 package com.cloudmytask.centralservice;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import com.cloudmytask.client.Request;
@@ -21,7 +22,7 @@ public interface CentralPrivateServiceInterface {
 	
 	
 	// ************ MULTICAST
-	public void sendTopology();
+	public void sendTopology() throws IOException;
 	
 	//public void testRequest(Request request, CallbackInterface ci);
 	
