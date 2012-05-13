@@ -49,6 +49,10 @@ public class GlobalConfig {
 	public static String CENTRAL_UNIT_IP = "localhost";
 	
 	
+	//multicast IP
+	public static final String MulticastAddress = "225.4.5.6";
+	public static final int MulticastPort = 20000;
+	public static final long BroadcastPeriod = 5000;
 	
 	
 }

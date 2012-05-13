@@ -22,7 +22,7 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 	private ConcurrentHashMap<String, Integer> loadList;
 	
 	// **** Multicast stuff
-	private MulticastServerHandler multicastHandler;
+	private MulticastServerHandler multicastHandler = null;
 	
 	
 	public CentralServiceObject() {
