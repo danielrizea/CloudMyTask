@@ -1,6 +1,8 @@
 package com.cloudmytask.centralservice;
 
-import java.util.HashMap;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -19,6 +21,9 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 	private ConcurrentHashMap<String, Boolean> bannedList;
 	private ConcurrentHashMap<String, Integer> loadList;
 	
+	// **** Multicast stuff
+	private MulticastServerHandler multicastHandler;
+	
 	
 	public CentralServiceObject() {
 
@@ -31,6 +36,12 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 		this.processAddToBannedRequestsPool = Executors.newFixedThreadPool(4);
 		this.processUpdateStatusRequestsPool = Executors.newFixedThreadPool(4);
 		this.processGetAvailableRequestsPool = Executors.newFixedThreadPool(4);
+		// ***** Multicast
+		try {
+			this.multicastHandler = new MulticastServerHandler(InetAddress.getByName("230.0.0.1"), 4000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -96,6 +107,13 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 			System.err.println("[GCDServiceObject] Eroare la awaitTermination: " + e);
 			e.printStackTrace();
 		}*/
+	}
+
+	public void sendTopology() {
+		// TODO Auto-generated method stub
+		
+		// trimitere topologie catre intantele clienti
+		
 	}
 
 }
