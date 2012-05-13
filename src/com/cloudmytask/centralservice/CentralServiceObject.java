@@ -1,5 +1,8 @@
 package com.cloudmytask.centralservice;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -7,6 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.client.Request;
 import com.cloudmytask.connectors.CallbackInterface;
 
@@ -109,11 +113,23 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 		}*/
 	}
 
-	public void sendTopology() {
-		// TODO Auto-generated method stub
+	
+	// convert to byte array
+	public static byte[] getBytes(Object obj) throws java.io.IOException{
+		ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
+		ObjectOutputStream oos = new ObjectOutputStream(bos); 
+		oos.writeObject(obj);
+		oos.flush(); 
+		oos.close(); 
+		bos.close();
+		byte [] data = bos.toByteArray();
+		return data;
+	  }
+	
+	public void sendTopology() throws IOException {
 		
-		// trimitere topologie catre intantele clienti
-		
+		// trimitere topologie catre instantele clienti
+		multicastHandler.sendPacket(getBytes(GlobalConfig.connections));
 	}
 
 }

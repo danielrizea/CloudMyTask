@@ -1,6 +1,7 @@
 package com.cloudmytask.service;
 
 import java.io.IOException;
+import java.net.DatagramPacket;
 
 public interface MulticastClientPublicInterface {
 
@@ -11,5 +12,7 @@ public interface MulticastClientPublicInterface {
 	public void unregisterFromGroup(MulticastGroup group) throws IOException;
 
 	// primire date
-	public byte[] receivePacketData(byte[] data) throws IOException;
+	//public byte[] receivePacketData() throws IOException;
+	public DatagramPacket receivePacketData() throws IOException;
+	
 }
