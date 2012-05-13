@@ -46,6 +46,7 @@ public class MachineInfo {
 			if(outLog != null){
 				outLog.append("["+tag+" "+ this.id +"] " + message );
 				outLog.newLine();
+				outLog.flush();
 			}
 		}catch(Exception e){
 			System.out.println("Exception writing " + tag + " " + message + " with " + e.getMessage());

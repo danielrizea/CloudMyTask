@@ -16,6 +16,7 @@ public class TopologyUpdateListener extends Thread{
 	private MulticastGroup group;
 	private MachineInfo machineInfo;
 	
+	private String log = "TopologyUpdateListener";
 	public TopologyUpdateListener(MulticastGroup group, MachineInfo machineInfo) throws IOException {
 		super();
 		this.multicastHandler = new MulticastClientHandler(new MulticastSocket(group.getPort()), group.getGroupAddress());
@@ -51,8 +52,9 @@ public class TopologyUpdateListener extends Thread{
 
 				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(packet.getData()));
 				TopologyRequest mg = (TopologyRequest) ois.readObject();
-				System.out.println("[TopologyUpdatetListener "+machineInfo.id+"] Am primit update topologie " + packet.getAddress() + ":" + packet.getPort());
 				
+				System.out.println("[TopologyUpdatetListener "+machineInfo.id+"] Am primit update topologie " + packet.getAddress() + ":" + packet.getPort());
+				machineInfo.writeToLogFile(log, "Am primit update topologie " + packet.getAddress() + ":" + packet.getPort());
 				//StreamAnnouncement sa = (StreamAnnouncement) ois.readObject();
 				//System.out.println("[StreamAnnouncementListener-" + this.hashCode() + "] Am primit lista de stream-uri " + sa.streamIds + " de la " + packet.getAddress() + ":" + packet.getPort() + "(TCPPort=" + sa.TCPPort + "; UDPPort=" + sa.UDPPort + ")");
 				ois.close();
