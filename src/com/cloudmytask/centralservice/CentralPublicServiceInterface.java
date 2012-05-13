@@ -14,4 +14,5 @@ public interface CentralPublicServiceInterface {
 	
 	// prima metoda pentru intrare in servviciu in cazul UDP si TCP
 	//public void createServerScriptFile(Request request, CallbackInterface ci);
+	
 }

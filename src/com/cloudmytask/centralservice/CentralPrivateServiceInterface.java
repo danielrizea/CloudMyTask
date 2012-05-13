@@ -19,6 +19,10 @@ public interface CentralPrivateServiceInterface {
 	// se face procesarea req de verificare carui vecin i se poate pasa cererea 
 	public void processGetAvailableRequest(Request request, CallbackInterface ci);
 	
+	
+	// ************ MULTICAST
+	public void sendTopology();
+	
 	//public void testRequest(Request request, CallbackInterface ci);
 	
 	//public void runScriptOnServver(Request request, String filename, CallbackInterface ci);
