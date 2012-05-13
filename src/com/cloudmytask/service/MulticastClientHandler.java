@@ -32,7 +32,7 @@ public class MulticastClientHandler implements MulticastClientPublicInterface{
 
 	public void unregisterFromGroup(MulticastGroup group) throws IOException {
 		socket.leaveGroup(group.getGroupAddress());
-		socket.close();  
+		//socket.close();  
 	}
 
 }

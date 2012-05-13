@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import com.cloudmytask.client.Request;
+import com.cloudmytask.client.TopologyRequest;
 import com.cloudmytask.connectors.CallbackInterface;
 
 public interface CentralPrivateServiceInterface {
@@ -22,19 +23,6 @@ public interface CentralPrivateServiceInterface {
 	
 	
 	// ************ MULTICAST
-	public void sendTopology() throws IOException;
+	public void sendTopology(TopologyRequest update) throws IOException;
 	
-	//public void testRequest(Request request, CallbackInterface ci);
-	
-	//public void runScriptOnServver(Request request, String filename, CallbackInterface ci);
-	
-	/*
-	public void searchCachedResultRequest(Request req, CallbackInterface ci);
-	
-	public void computeGCDRequest(Request req, CallbackInterface ci);
-	
-	public void sendResultRequest(Integer result, CallbackInterface ci);
-	
-	public void cacheResultRequest(Request req, Integer result, CallbackInterface ci);
-	*/
 }

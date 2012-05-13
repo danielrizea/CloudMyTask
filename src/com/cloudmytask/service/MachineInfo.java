@@ -1,5 +1,10 @@
 package com.cloudmytask.service;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+
 public class MachineInfo {
 
 	
@@ -8,6 +13,8 @@ public class MachineInfo {
 	public String machineIP;
 	
 	private int nrProcessors;
+	
+	public BufferedWriter outLog = null;
 	
 	private static final int WORKING_THREADS_PER_PROCESS = 2;
 	
@@ -24,9 +31,26 @@ public class MachineInfo {
         
         MAX_WORKING_THREADS_ON_MACHINE = getMaxJobsInExecution(); 
         
+        try{
+        	outLog = new BufferedWriter(new FileWriter("InstanceService_"+this.id+".log")); 	
+        }
+        catch(Exception e){
+        	System.out.println("[MachineInfo] Error in creating log file " + e.getMessage());
+        }
+        
         System.out.println("[CMTServiceObject] machine " + id + " has " + nrProcessors + " can handle " + MAX_WORKING_THREADS_ON_MACHINE + " jobs in parallel");
 	}
 	
+	public void writeToLogFile(String tag, String message){
+		try{
+			if(outLog != null){
+				outLog.append("["+tag+" "+ this.id +"] " + message );
+				outLog.newLine();
+			}
+		}catch(Exception e){
+			System.out.println("Exception writing " + tag + " " + message + " with " + e.getMessage());
+		}
+	}
 	
 	public int getMaxJobsInExecution(){
 		

@@ -12,7 +12,9 @@ import java.util.concurrent.Executors;
 
 import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.client.Request;
+import com.cloudmytask.client.TopologyRequest;
 import com.cloudmytask.connectors.CallbackInterface;
+import com.cloudmytask.service.MulticastGroup;
 
 public class CentralServiceObject implements CentralPublicServiceInterface, CentralPrivateServiceInterface {
 
@@ -27,7 +29,7 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 	
 	// **** Multicast stuff
 	private MulticastServerHandler multicastHandler = null;
-	
+	private TopologyChangeThread topologyChange = null;
 	
 	public CentralServiceObject() {
 
@@ -41,12 +43,20 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 		this.processUpdateStatusRequestsPool = Executors.newFixedThreadPool(4);
 		this.processGetAvailableRequestsPool = Executors.newFixedThreadPool(4);
 		// ***** Multicast
-		try {
-			this.multicastHandler = new MulticastServerHandler(InetAddress.getByName("230.0.0.1"), 4000);
+		try {	
+			MulticastGroup group = new MulticastGroup(GlobalConfig.MulticastAddress, GlobalConfig.MulticastPort);
+			this.multicastHandler = new MulticastServerHandler(group);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+		//create topology change watch
+		try{
+			topologyChange = new TopologyChangeThread(this);
+			topologyChange.startRunning();			
+		}catch(Exception e){
+			System.out.println("[CentralServiceInstance] error in starting topology changed thread lisener " + e.getMessage());
+		}
 	}
 	
 	public void sendRequestToCentralUnit(Request request, CallbackInterface ci) {
@@ -114,22 +124,9 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 	}
 
 	
-	// convert to byte array
-	public static byte[] getBytes(Object obj) throws java.io.IOException{
-		ByteArrayOutputStream bos = new ByteArrayOutputStream(); 
-		ObjectOutputStream oos = new ObjectOutputStream(bos); 
-		oos.writeObject(obj);
-		oos.flush(); 
-		oos.close(); 
-		bos.close();
-		byte [] data = bos.toByteArray();
-		return data;
-	  }
-	
-	public void sendTopology() throws IOException {
-		
-		// trimitere topologie catre instantele clienti
-		multicastHandler.sendPacket(getBytes(GlobalConfig.connections));
+	public void sendTopology(TopologyRequest update) throws IOException {
+
+		multicastHandler.sendPacket(update);
 	}
 
 }

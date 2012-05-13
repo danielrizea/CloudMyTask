@@ -7,16 +7,20 @@ import java.net.DatagramPacket;
 import java.net.InetAddress;
 import java.net.MulticastSocket;
 
+import com.cloudmytask.client.TopologyRequest;
+
 
 public class TopologyUpdateListener extends Thread{
 	private MulticastClientHandler multicastHandler;
 	private boolean running;
 	private MulticastGroup group;
+	private MachineInfo machineInfo;
 	
-	public TopologyUpdateListener(MulticastGroup group) throws IOException {
+	public TopologyUpdateListener(MulticastGroup group, MachineInfo machineInfo) throws IOException {
 		super();
 		this.multicastHandler = new MulticastClientHandler(new MulticastSocket(group.getPort()), group.getGroupAddress());
 		this.running = false;
+		this.machineInfo = machineInfo;
 	}
 	
 	public synchronized void startRunning() {
@@ -41,19 +45,25 @@ public class TopologyUpdateListener extends Thread{
 			try {
 				//DatagramPacket packet = new DatagramPacket(receiveBuffer, 0, receiveBuffer.length);
 				//this.socket.receive(packet);
+				//System.out.println("[TopologyUpdatetListener "+machineInfo.id+"] HERE in topology lsintener");
 				
 				DatagramPacket packet = multicastHandler.receivePacketData();
 
 				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(packet.getData()));
-				MulticastGroup mg = (MulticastGroup) ois.readObject();
-				System.out.println("[TopologyUpdatetListener] Am primit lista de stream-uri  de la " + packet.getAddress() + ":" + packet.getPort() + "(Adr multicast=" + mg.getGroupAddress().getHostName() + "; UDPPort=" + mg.getPort() + ")");
+				TopologyRequest mg = (TopologyRequest) ois.readObject();
+				System.out.println("[TopologyUpdatetListener "+machineInfo.id+"] Am primit update topologie " + packet.getAddress() + ":" + packet.getPort());
+				
 				//StreamAnnouncement sa = (StreamAnnouncement) ois.readObject();
 				//System.out.println("[StreamAnnouncementListener-" + this.hashCode() + "] Am primit lista de stream-uri " + sa.streamIds + " de la " + packet.getAddress() + ":" + packet.getPort() + "(TCPPort=" + sa.TCPPort + "; UDPPort=" + sa.UDPPort + ")");
 				ois.close();
 
-				//this.counter++;
-				//StreamingServiceTCPUDPClient ssci = new StreamingServiceTCPUDPClient((this.id + 1) * 100000 + this.counter, packet.getAddress().getHostAddress(), sa.TCPPort, sa.UDPPort, this.clientIP, this.UDPclientPort);
-				//this.sspi.receivedStreamAnnouncement(sa.streamIds, ssci);
+				
+				//process topology changes
+				
+				synchronized (machineInfo) {
+				
+					machineInfo.neighbours = mg.connections[machineInfo.id];
+				}
 			} catch (Exception e) {
 				System.err.println("[TopologyUpdatetListener-" + this.hashCode() + "] Exceptie la receive: " + e);
 				e.printStackTrace();

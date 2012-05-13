@@ -24,7 +24,7 @@ public class CreateServerScriptJob implements Runnable {
 		
 		//creare fisier python
 		
-		String filename = "server_" + request.hashCode()+ "_"+request.scriptFileName;
+		String filename = "python_scripts/server_" + request.hashCode()+ "_"+request.scriptFileName;
 		
 		 try{
 			  // Create file 

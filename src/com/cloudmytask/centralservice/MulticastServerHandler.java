@@ -1,27 +1,39 @@
 package com.cloudmytask.centralservice;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
 
+import com.cloudmytask.service.MulticastGroup;
+
 public class MulticastServerHandler {
 
-	private InetAddress multicastAddr;
-	private int portNo;
+	private MulticastGroup group;
 	private DatagramSocket socket;
 	
-	public MulticastServerHandler(InetAddress multicastAddr, int portNo) throws SocketException {
+	public MulticastServerHandler(MulticastGroup group) throws SocketException {
 		super();
-		this.multicastAddr = multicastAddr;
-		this.portNo = portNo;
+		this.group = group;
 		this.socket = new DatagramSocket();
 	}
 	
-	public void sendPacket(byte[] data) throws IOException
+	public void sendPacket(Object update) throws IOException
 	{
-		DatagramPacket packet = new DatagramPacket(data, 0, data.length, multicastAddr, portNo);
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+		oos.writeObject(update);
+		byte[] data = baos.toByteArray();
+		
+		System.out.println("[Multicast send handler] send data");
+		
+		DatagramPacket packet = new DatagramPacket(data, 0, data.length, group.getGroupAddress(), group.getPort());
 		socket.send(packet);
+	
+		System.out.println("[Multicast send handler] data sent");
+		
 	}
 }

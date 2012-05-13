@@ -1,10 +1,12 @@
 package com.cloudmytask.service;
 
+import java.io.FileOutputStream;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.centralservice.CentralPublicServiceInterface;
 import com.cloudmytask.client.Request;
 import com.cloudmytask.connectors.CallbackInterface;
@@ -20,6 +22,8 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	
 	private MachineInfo machineDescription;
 	
+	private TopologyUpdateListener topologyUpdateListener = null;
+	
 	// execution on local machine
 	private ConcurrentHashMap<String,Request> requestsInExecution;
 	
@@ -32,7 +36,9 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	
 	private ClearRequestsThreadForPeriod clearRequestsThread;
 	
-	public String LOGTag;
+	public static FileOutputStream outLog;
+	
+	public String LOGTag = "CMTServiceObject";
 	
 	
 	
@@ -71,19 +77,31 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		//thread that every period empties clientRequest
 		clearRequestsThread = new ClearRequestsThreadForPeriod(clientRequestsInPeriod);
 		
-		this.LOGTag = "[CMTServiceObjectInstance "+machineDescription.id+"]";
+		//topology update thread
+		try{
+			MulticastGroup group = new MulticastGroup(GlobalConfig.MulticastAddress, GlobalConfig.MulticastPort);
+			this.topologyUpdateListener = new TopologyUpdateListener(group,machineDescription);
+			//start topology update listener
+			topologyUpdateListener.startRunning();
+		}
+		catch(Exception e){
+			System.out.println("[CMTServiceObject] error in creating group" + e.getMessage());
+		}
+		
 	}
 	
 
 	public void decodeRequest(byte[] request, CallbackInterface ci) {
 
-		System.out.println(LOGTag + "S-a primit o cerere de decode (ci=" + ci + ") => trimit cerere de decode");
+		machineDescription.writeToLogFile(LOGTag,"S-a primit o cerere de decode (ci=" + ci + ") => trimit cerere de decode" );
+		//System.out.println(LOGTag + "S-a primit o cerere de decode (ci=" + ci + ") => trimit cerere de decode");
 		
 		this.decodePool.submit(new DecodeJob(this, request, ci));
 		
 	}
 	
 	public void filterClients(Request request,CallbackInterface ci){
+		
 		
 		this.clientFilterPool.submit(new FilterClientsJob(this, request, ci, clientObjectInterface, machineDescription, clientRequestsInPeriod));
 	}
@@ -97,8 +115,8 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	public void createServerScriptFile(Request request,
 			CallbackInterface ci) {
 		
-		System.out.println(LOGTag + " S-a primit o cerere de creare script local (ci=" + ci + ") request" + request);
-		
+		//System.out.println(LOGTag + " S-a primit o cerere de creare script local (ci=" + ci + ") request" + request);
+		machineDescription.writeToLogFile(LOGTag, " S-a primit o cerere de creare script local (ci=" + ci + ") request" + request);
 		this.createScriptFilePool.submit(new CreateServerScriptJob(this, request, ci));
 		
 	}
@@ -107,8 +125,8 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	public void runScriptOnServer(Request request, String filename,
 			CallbackInterface ci) {
 
-		System.out.println(LOGTag + " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
-	
+		//System.out.println(LOGTag + " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
+		machineDescription.writeToLogFile(LOGTag, " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
 		this.runScriptOnServerPool.submit(new RunScriptOnServerJob(this, request, filename, ci,machineDescription, requestsInExecution));
 	}
 
@@ -125,8 +143,9 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	
 	public void jobHandOff(Request request, CallbackInterface ci, int machineID) {
 		// TODO Auto-generated method stub
-		System.out.println(LOGTag + " start job hand-off");
 		
+		//System.out.println(LOGTag + " start job hand-off");
+		machineDescription.writeToLogFile(LOGTag," start job hand-off" );
 		this.jobHandOffPool.submit(new HandOffJob(this, request, ci, clientObjectInterface, machineDescription, machineID, requestsWaitingAnswer));
 	}
 	
