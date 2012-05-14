@@ -1,8 +1,17 @@
-[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request13642577:3
-[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request13642577:3
-[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request19642336:3
-[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request18983808:3
-[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request19642336:3
-[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request18983808:3
-[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request15842168:3
-[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request15842168:3
+[TopologyUpdateListener 1] Am primit update topologie /10.38.130.195:35221
+[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request16579154:3
+[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request16579154:3
+[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request25616143:3
+[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request25616143:3
+[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request23667197:3
+[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request23667197:3
+[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request21905217:3
+[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request21905217:3
+[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request3338151:3
+[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request3338151:3
+[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request20230270:3
+[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request20230270:3
+[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request22939763:3
+[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request22939763:3
+[CMTServiceObject 1]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:5001) request26704795:3
+[CMTServiceObject 1]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:5001) +request26704795:3

@@ -1,20 +1,33 @@
-[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request22971385:1
-[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request20233936:1
-[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request14867177:1
-[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request22971385:1
-[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request4116479:1
-[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request20233936:1
-[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request14867177:1
-[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request4116479:1
+[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request29132923:1[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request10774273:1
+
+[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request4667711:1
+[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request27940859:1
+[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request4667711:1[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request27940859:1
+
+[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request29132923:1
+[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request10774273:1
+[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request1691809:1
+[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request13642577:1
+[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request1691809:1
+[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request13642577:1
+[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request19543955:1
+[CMTServiceObject 0]  S-a primit o cerere de creare script local (ci=0.0.0.0/0.0.0.0:7000) request28899428:1
+[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request19543955:1
+[CMTServiceObject 0]  S-a primit o cerere de executie script pe server   (ci=0.0.0.0/0.0.0.0:7000) +request28899428:1
+[TopologyUpdateListener 0] Am primit update topologie /10.38.130.195:35221
+[DiscoverFreeNeighbors 0] DiscoverFreeNeighbor send to 1 neighborsLoad [100.0, 0.0, 100.0, 100.0, 0.0]
 [CMTServiceObject 0]  start job hand-off
+[DiscoverFreeNeighbors 0] DiscoverFreeNeighbor send to 1 neighborsLoad [100.0, 0.0, 100.0, 100.0, 0.0]
 [CMTServiceObject 0]  start job hand-off
+[DiscoverFreeNeighbors 0] DiscoverFreeNeighbor send to 1 neighborsLoad [100.0, 0.0, 100.0, 100.0, 0.0]
 [CMTServiceObject 0]  start job hand-off
+[DiscoverFreeNeighbors 0] DiscoverFreeNeighbor send to 1 neighborsLoad [100.0, 0.0, 100.0, 100.0, 0.0]
 [CMTServiceObject 0]  start job hand-off
+[DiscoverFreeNeighbors 0] DiscoverFreeNeighbor send to 1 neighborsLoad [100.0, 0.0, 100.0, 100.0, 0.0]
 [CMTServiceObject 0]  start job hand-off
+[DiscoverFreeNeighbors 0] DiscoverFreeNeighbor send to 1 neighborsLoad [100.0, 0.0, 100.0, 100.0, 0.0]
 [CMTServiceObject 0]  start job hand-off
+[DiscoverFreeNeighbors 0] DiscoverFreeNeighbor send to 1 neighborsLoad [100.0, 0.0, 100.0, 100.0, 0.0]
 [CMTServiceObject 0]  start job hand-off
-[CMTServiceObject 0]  start job hand-off
-[CMTServiceObject 0]  start job hand-off
-[CMTServiceObject 0]  start job hand-off
-[CMTServiceObject 0]  start job hand-off
+[DiscoverFreeNeighbors 0] DiscoverFreeNeighbor send to 1 neighborsLoad [100.0, 0.0, 100.0, 100.0, 0.0]
 [CMTServiceObject 0]  start job hand-off

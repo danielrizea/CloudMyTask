@@ -2,6 +2,7 @@ package com.cloudmytask.centralservice;
 
 import java.io.IOException;
 
+import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.client.TopologyRequest;
 
 
@@ -40,6 +41,7 @@ public class TopologyChangeThread extends Thread{
 				// trimitere topologie catre instantele clienti
 				TopologyRequest update = new TopologyRequest("topology update", TopologyRequest.UPDATE_TOPOLOGY);
 				
+				update.connections = GlobalConfig.connections;
 				this.csi.sendTopology(update);
 				System.out.println("[TopologyChangedThread] + topology changed send to service instances");
 				

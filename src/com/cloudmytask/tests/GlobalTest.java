@@ -123,7 +123,7 @@ public class GlobalTest {
 			try {
 				Thread.sleep(1000);
 			} catch (Exception e) {}
-			for(int i=0;i<4;i++){
+			for(int i=0;i<8;i++){
 				
 				Thread th = new Thread(new Runnable() {
 					
@@ -149,7 +149,7 @@ public class GlobalTest {
 			try {
 				Thread.sleep(1000);
 			} catch (Exception e) {}
-			for(int i=0;i<4;i++){
+			for(int i=0;i<8;i++){
 				
 				Thread th = new Thread(new Runnable() {
 					
