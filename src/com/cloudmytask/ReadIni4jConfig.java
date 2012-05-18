@@ -61,9 +61,18 @@ public class ReadIni4jConfig {
 			
 		}
 		
-		System.out.println("Dim matrix :" + i);
+		System.out.println("Dim matrix :" + nrLine);
 		
-		GlobalConfig.connections = connections;
+		//dimensiunea fixa a matricei de vecini
+		int array_dim = nrCol -1;
+		
+		int new_connections[][] = new int[array_dim][array_dim];
+		
+		for(i=0;i<array_dim;i++)
+			for(int j=0;j<array_dim;j++)
+				new_connections[i][j] = connections[i][j];
+		
+		GlobalConfig.connections = new_connections;
 		
 	
 		GlobalConfig.MAX_REQUEST_PERIOD = Integer.parseInt(iniConnection.get("MAX_REQUEST_PERIOD"));
