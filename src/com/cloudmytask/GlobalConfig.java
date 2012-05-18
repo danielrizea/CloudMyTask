@@ -2,25 +2,25 @@ package com.cloudmytask;
 
 public class GlobalConfig {
 
-	public static int TCP = 0;
-	public static int UDP = 1;
-	public static int NIOTCP = 2;
-	public static int CommunicationType = TCP;
+	public static int TCP ;
+	public static int UDP ;
+	public static int NIOTCP ;
+	public static int CommunicationType ;
 	// 1 marcheaza conexiunea
 	public static int connections[][];
 
-	public static int MAX_REQUEST_PERIOD = 1000;	
-	public static int MAX_REQUESTS_ALLOWED_IN_PERIOD = 4;
+	public static int MAX_REQUEST_PERIOD ;	
+	public static int MAX_REQUESTS_ALLOWED_IN_PERIOD ;
 
 	//ip's
 	
 	
-	public static int INSTANCE_COMM_PORT = 5000;	
-	public static int CLIENT_COMM_PORT = 7000;
-	public static int MACHINE_LOCAL_PORT = 6000;
-	public static int CENTRAL_UNIT_PORT = 30000;
-	public static int MulticastPort = 20000;
-	public static long BroadcastPeriod = 5000;
+	public static int INSTANCE_COMM_PORT ;	
+	public static int CLIENT_COMM_PORT ;
+	public static int MACHINE_LOCAL_PORT;
+	public static int CENTRAL_UNIT_PORT ;
+	public static int MulticastPort;
+	public static long BroadcastPeriod ;
 	
 	//porturi masina
 	//local fiecare masina/serviciu booteaza pe 
@@ -33,9 +33,9 @@ public class GlobalConfig {
 	
 	//portul pe care asculta masina centrala
 	
-	public static String CENTRAL_UNIT_IP = "localhost";
-	public static String machineIPs[] ={"localhost","localhost","localhost","localhost","localhost"};
-	public static String MulticastAddress = "225.4.5.6";
+	public static String CENTRAL_UNIT_IP ;
+	public static String machineIPs[] ;
+	public static String MulticastAddress;
 	
 	
 	//multicast IP
