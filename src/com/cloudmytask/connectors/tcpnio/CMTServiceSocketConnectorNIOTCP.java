@@ -38,7 +38,7 @@ public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSoc
 	
 	private LinkedBlockingQueue<ByteBuffer> bufferPool;
 	
-	public CMTServiceSocketConnectorNIOTCP(int ports[], CMTPublicServiceInterface sobj) {
+	public CMTServiceSocketConnectorNIOTCP( CMTPublicServiceInterface sobj,int ports[]) {
 		this.ports = ports;
 		this.sobj = sobj;
 		
