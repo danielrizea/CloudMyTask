@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.cloudmytask.GlobalConfig;
+import com.cloudmytask.ReadIni4jConfig;
 import com.cloudmytask.centralservice.CentralServiceObject;
 import com.cloudmytask.centralservice.CentralServiceSocketConnectorUDP;
 import com.cloudmytask.client.Request;
@@ -22,6 +23,7 @@ public class TCPTest {
 
 	
 	public static void main(String args[]){
+		ReadIni4jConfig var = new ReadIni4jConfig();
 		int central_ports[] = new int[1];
 		central_ports[0] = GlobalConfig.CENTRAL_UNIT_PORT;
 		//start central service
