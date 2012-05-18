@@ -60,6 +60,9 @@ public class ReadIni4jConfig {
 			}
 			
 		}
+		
+		System.out.println("Dim matrix :" + i);
+		
 		GlobalConfig.connections = connections;
 		
 	
