@@ -3,4 +3,4 @@ matrix = {{0,1,0,0,1},{1,0,1,0,0},{0,1,0,1,1},{0,0,1,0,0},{1,0,1,0,0}}
 MAX_REQUEST_PERIOD = 200
 MAX_REQUESTS_ALLOWED_IN_PERIOD = 4
 [protocol]
-type = 0
+type = 2

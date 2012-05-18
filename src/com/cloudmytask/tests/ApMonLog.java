@@ -55,7 +55,7 @@ public class ApMonLog {
 	 * @param parameterType the parameter type
 	 * @param parameterValue the parameter value
 	 */
-	public void logMessage(String parameterName, Integer parameterType, Object parameterValue){
+	public void logMessage(String parameterName, Integer parameterType, Integer parameterValue){
 		
 		if(apm != null){
 			try{

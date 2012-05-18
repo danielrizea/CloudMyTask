@@ -33,47 +33,54 @@ public class FilterClientsJob implements Runnable {
 	
 		//send to client// wait for response;
 		
-		Request isBann = new Request("is client banned", Request.R_IS_BANNED);
-		isBann.clientID = request.clientID;
-
-		int clientPort = 6500 + machineInfo.id + port_id;
-		port_id++;
+		if(GlobalConfig.BANN_ENABLE == true){
 		
-		Request response = (Request)CommunicationUtils.sendUDPRequestGetResponse(isBann, GlobalConfig.CENTRAL_UNIT_IP, GlobalConfig.CENTRAL_UNIT_PORT, clientPort);
-		
-		if(response.bannedInfo == false){
-		
+			Request isBann = new Request("is client banned", Request.R_IS_BANNED);
+			isBann.clientID = request.clientID;
+	
+			int clientPort = 6500 + machineInfo.id + port_id;
+			port_id++;
 			
-			if(clientsRequests.containsKey(request.clientID)){
+			Request response = (Request)CommunicationUtils.sendUDPRequestGetResponse(isBann, GlobalConfig.CENTRAL_UNIT_IP, GlobalConfig.CENTRAL_UNIT_PORT, clientPort);
+			
+			if(response.bannedInfo == false){
+			
 				
-				int jobsInTheLastPeriod = clientsRequests.get(request.clientID);
-				
-				if(jobsInTheLastPeriod >= GlobalConfig.MAX_REQUESTS_ALLOWED_IN_PERIOD){
-					Request answer = new Request("user maximum scripts allowed in " + GlobalConfig.MAX_REQUEST_PERIOD/1000 + " seconds", Request.REQUEST_PROCESS_SCRIPT);
-					answer.requestID = answer.hashCode() + "_answer";
-					System.out.println("[CMTServiceObject "+machineInfo.id+"] filter client " + request.clientID);
-					this.service.sendAnswerToClient(answer, ci);
+				if(clientsRequests.containsKey(request.clientID)){
 					
-					Request addBann = new Request("add client to bann list", Request.R_ADD_BANNED);
+					int jobsInTheLastPeriod = clientsRequests.get(request.clientID);
 					
-					addBann.clientID = request.clientID;
-					clientPort = 5500 + machineInfo.id + port_id;
-					port_id++;
-					response = (Request)CommunicationUtils.sendUDPRequestGetResponse(addBann, GlobalConfig.CENTRAL_UNIT_IP, GlobalConfig.CENTRAL_UNIT_PORT, clientPort);
-					
+					if(jobsInTheLastPeriod >= GlobalConfig.MAX_REQUESTS_ALLOWED_IN_PERIOD){
+						Request answer = new Request("user maximum scripts allowed in " + GlobalConfig.MAX_REQUEST_PERIOD/1000 + " seconds", Request.REQUEST_PROCESS_SCRIPT);
+						answer.requestID = answer.hashCode() + "_answer";
+						System.out.println("[CMTServiceObject "+machineInfo.id+"] filter client " + request.clientID);
+						this.service.sendAnswerToClient(answer, ci);
+						
+						Request addBann = new Request("add client to bann list", Request.R_ADD_BANNED);
+						
+						addBann.clientID = request.clientID;
+						clientPort = 5500 + machineInfo.id + port_id;
+						port_id++;
+						response = (Request)CommunicationUtils.sendUDPRequestGetResponse(addBann, GlobalConfig.CENTRAL_UNIT_IP, GlobalConfig.CENTRAL_UNIT_PORT, clientPort);
+						
+					}
+					else{
+						this.service.decideMachineAvailable(request, ci);
+					}
 				}
-				else{
+				else
 					this.service.decideMachineAvailable(request, ci);
-				}
+				
 			}
 			else
-				this.service.decideMachineAvailable(request, ci);
-			
+			{
+				Request respone = new Request("you are banned", Request.REQUEST_PROCESS_SCRIPT);
+				ci.sendResult(response);
+		}
 		}
 		else
 		{
-			Request respone = new Request("you are banned", Request.REQUEST_PROCESS_SCRIPT);
-			ci.sendResult(response);
+			this.service.decideMachineAvailable(request, ci);
 		}
 	}
 }

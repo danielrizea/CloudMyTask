@@ -11,7 +11,8 @@ public class GlobalConfig {
 
 	public static int MAX_REQUEST_PERIOD ;	
 	public static int MAX_REQUESTS_ALLOWED_IN_PERIOD ;
-
+	public static boolean BANN_ENABLE = false;
+	
 	//ip's
 	
 	

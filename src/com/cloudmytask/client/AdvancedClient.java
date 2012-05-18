@@ -1,10 +1,12 @@
 package com.cloudmytask.client;
 
+import java.util.Date;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import com.cloudmytask.GlobalConfig;
+import com.cloudmytask.tests.ApMonLog;
 import com.cloudmytask.utils.CommunicationUtils;
 
 
@@ -44,6 +46,9 @@ public class AdvancedClient extends Thread {
 			@Override
 			public void run() {
 				Request r;
+				
+				ApMonLog apm = ApMonLog.getInstance();
+				
 				// TODO Auto-generated method stub
 				r = new Request("vreau sa-mi procesezi scriptul asta", Request.REQUEST_PROCESS_SCRIPT);			
 				r.scriptFileData = data;
@@ -51,7 +56,13 @@ public class AdvancedClient extends Thread {
 				r.requestID = r.hashCode() + "_" + r + "_";
 				r.clientID = clientID;
 				//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
+				
+				long startTime = new Date().getTime();
 				Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, localPort);
+				
+				long stopTime = new Date().getTime();
+				apm.logMessage("time_between_requests_5", 0,  (int)(stopTime-startTime));
+				
 				System.out.println("[Client + " + clientID+"] Response from serviceInstance http://"+ instanceIP +":" + instancePort + " message :" + response.message);
 			
 			}

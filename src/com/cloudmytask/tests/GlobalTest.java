@@ -5,14 +5,14 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Random;
 
 import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.ReadIni4jConfig;
 import com.cloudmytask.centralservice.CentralServiceObject;
 import com.cloudmytask.centralservice.CentralServiceSocketConnectorUDP;
 import com.cloudmytask.client.AdvancedClient;
-import com.cloudmytask.client.Request;
-import com.cloudmytask.client.TCPClient;
+
 import com.cloudmytask.connectors.tcp.CMTServiceSocketConnectorTCP;
 import com.cloudmytask.connectors.tcpnio.CMTServiceSocketConnectorNIOTCP;
 import com.cloudmytask.connectors.udp.CMTServiceSocketConnectorUDP;
@@ -103,6 +103,10 @@ public class GlobalTest {
 		
 		ArrayList<AdvancedClient> advancedClients = new ArrayList<AdvancedClient>();
 		
+		//obtinere singleton testare
+		ApMonLog apm = ApMonLog.getInstance();
+		
+		
 		int nr_clienti = 4;
 		
 		for(int i=0;i<nr_clienti;i++){
@@ -137,11 +141,21 @@ public class GlobalTest {
 				System.out.println("Exception in reading script file");
 			}
 			
-			for(int i=0;i<advancedClients.size();i++){
-				
-				advancedClients.get(i).submitScriptForExecutionBlockOnWaitingResult(data, filename);
-			}
+			Random rand = new Random();
+			int maxRequestsPerCicle = 10;
+			while(true){
+				for(int i=0;i<advancedClients.size();i++){
 			
+					int requests = rand.nextInt(maxRequestsPerCicle);
+					for(int j=0;j<requests;j++)
+						advancedClients.get(i).submitScriptForExecutionBlockOnWaitingResult(data, filename);
+				
+					try {
+						Thread.sleep(7000);
+					} catch (Exception e) {}
+					
+				}
+			}
 	}
 	
 	
@@ -157,23 +171,5 @@ public class GlobalTest {
 		
 		final String clientID = "client_";
 
-
-		
-
-			try {
-				Thread.sleep(1000);
-			} catch (Exception e) {}
-			for(int i=0;i<8;i++){
-				
-				/*
-		
-		for (CMTServiceSocketConnectorTCP service: tcpConnectorList) {
-			try {
-				service.stop();
-			} catch (Exception e) {}
-		}
-		*/
-		
-	}
 	}
 }

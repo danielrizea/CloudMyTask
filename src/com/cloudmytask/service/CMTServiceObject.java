@@ -11,6 +11,7 @@ import com.cloudmytask.centralservice.CentralPublicServiceInterface;
 import com.cloudmytask.client.Request;
 import com.cloudmytask.connectors.CallbackInterface;
 import com.cloudmytask.service.client.CMTClientPublicInterface;
+import com.cloudmytask.tests.ApMonLog;
 
 public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateServiceInterface {
 	
@@ -40,6 +41,18 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	
 	public String LOGTag = "CMTServiceObject";
 	
+	public Thread checkStatus = new Thread(new Runnable() {
+		
+		@Override
+		public void run() {
+			// TODO Auto-generated method stub
+			
+			ApMonLog apm = ApMonLog.getInstance();
+		
+			apm.logMessage("serviceInstanceLoad_"+machineDescription.id, 0, (requestsInExecution.size()*100)/machineDescription.getMaxJobsInExecution());
+			
+		}
+	});
 	
 	
 	public CMTServiceObject(CMTClientPublicInterface clientObjectInterface, MachineInfo machineDescription, CentralPublicServiceInterface centralInterface) {
