@@ -22,7 +22,7 @@ public interface CentralPrivateServiceInterface {
 	public void processGetAvailableRequest(Request request, CallbackInterface ci);
 	
 	
-	// ************ MULTICAST
+	// MULTICAST - trimite topologia prin multicast
 	public void sendTopology(TopologyRequest update) throws IOException;
 	
 }

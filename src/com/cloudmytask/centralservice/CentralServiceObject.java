@@ -19,7 +19,7 @@ import com.cloudmytask.service.MulticastGroup;
 public class CentralServiceObject implements CentralPublicServiceInterface, CentralPrivateServiceInterface {
 
 	// un pool de thread-uri pentru a putea prelua cererile primite de la celelalte masini
-	// un al 2lea pool de thread-uri pentru a procesa cererile primite
+	// alte pool-uri de thread-uri pentru a procesa cererile primite
 	private ExecutorService evaluateRequestsPool, processIsBannedRequestsPool, processAddToBannedRequestsPool; 
 	private ExecutorService processGetAvailableRequestsPool, processUpdateStatusRequestsPool;
 	
@@ -27,7 +27,7 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 	private ConcurrentHashMap<String, Boolean> bannedList;
 	private ConcurrentHashMap<String, Integer> loadList;
 	
-	// **** Multicast stuff
+	// MULTICAST handler + thread care se ocupa de informarea modificarilor in topologie 
 	private MulticastServerHandler multicastHandler = null;
 	private TopologyChangeThread topologyChange = null;
 	
@@ -42,7 +42,7 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 		this.processAddToBannedRequestsPool = Executors.newFixedThreadPool(4);
 		this.processUpdateStatusRequestsPool = Executors.newFixedThreadPool(4);
 		this.processGetAvailableRequestsPool = Executors.newFixedThreadPool(4);
-		// ***** Multicast
+		// MULTICAST - creare grup de multicast
 		try {	
 			MulticastGroup group = new MulticastGroup(GlobalConfig.MulticastAddress, GlobalConfig.MulticastPort);
 			this.multicastHandler = new MulticastServerHandler(group);
@@ -59,39 +59,45 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 		}
 	}
 	
+	// functie apelata de restul instantelor pentru a trimite cerere la CUnit
 	public void sendRequestToCentralUnit(Request request, CallbackInterface ci) {
-		// TODO Auto-generated method stub
 		
-		// creaee thread pt job
+		// thread pt job de tip EvaluateRequest (pool 1)
 		EvaluateRequestJob erj = new EvaluateRequestJob(this, bannedList, loadList, request, ci);
 		
 		this.evaluateRequestsPool.submit(erj);
 	}
 
+	// functie apelata pentru a adauga un client in banned list
 	public void processAddToBannedRequest(Request request,  CallbackInterface ci) {
-		// TODO Auto-generated method stub
+		
+		// thread pentru job de tip AddToBanned (pool 2)
 		AddToBannedRequestJob erj = new AddToBannedRequestJob(this, bannedList, request, ci);
 		
 		this.processAddToBannedRequestsPool.submit(erj);
 	}
 
+	// DEPRICATED ? functie apelata pentru a afla ce vecini sunt available
 	public void processGetAvailableRequest(Request request,  CallbackInterface ci) {
-		// TODO Auto-generated method stub
 		
 		GetAvailableRequestJob erj = new GetAvailableRequestJob(this, loadList, request, ci);
 		
 		this.processGetAvailableRequestsPool.submit(erj);
 	}
 
+	// functie apelata pentru a verifica daca un client este in banned list
 	public void processIsBannedRequest(Request request, CallbackInterface ci) {
-		// TODO Auto-generated method stub
+	
+		// thread pentru job de tip IsBanned (pool 2)
 		IsBannedRequestJob erj = new IsBannedRequestJob(this, bannedList, request, ci);
 		
 		this.processIsBannedRequestsPool.submit(erj);	
 	}
 
+	// functie apelata pentru a anunta modificarile din statusul unei masini (cat e nivelul load)
 	public void processUpdateStatusRequest(Request request, CallbackInterface ci) {
-		// TODO Auto-generated method stub
+		
+		// thread pentru job de tip UpdateStatus (pool 2)
 		UpdateStatusRequestJob erj = new UpdateStatusRequestJob(this, loadList, request, ci);
 		
 		this.processUpdateStatusRequestsPool.submit(erj);	
@@ -104,26 +110,12 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 	}
 	
 	public void stop() {
-	/*	this.decryptPool.shutdown();
-		this.decodePool.shutdown();
-		this.searchCachedResultPool.shutdown();
-		this.computeGCDPool.shutdown();
-		this.sendResultPool.shutdown();
-		this.cacheResultPool.shutdown();
-		
-		try {
-			this.decryptPool.awaitTermination(100000, TimeUnit.MILLISECONDS);
-			this.decodePool.awaitTermination(100000, TimeUnit.MILLISECONDS);
-			this.searchCachedResultPool.awaitTermination(100000, TimeUnit.MILLISECONDS);
-			this.computeGCDPool.awaitTermination(100000, TimeUnit.MILLISECONDS);
-			this.cacheResultPool.awaitTermination(100000, TimeUnit.MILLISECONDS);
-		} catch (Exception e) {
-			System.err.println("[GCDServiceObject] Eroare la awaitTermination: " + e);
-			e.printStackTrace();
-		}*/
+		// Nothing to do here.
 	}
 
 	
+	// functie apelata pentru trimiterea topologiei catre celelalte instante de catre masina centrala
+	// functie apelata din TopologyChangeThread
 	public void sendTopology(TopologyRequest update) throws IOException {
 
 		multicastHandler.sendPacket(update);

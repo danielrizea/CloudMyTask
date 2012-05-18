@@ -22,6 +22,8 @@ public class TopologyUpdateListener extends Thread{
 		this.multicastHandler = new MulticastClientHandler(new MulticastSocket(group.getPort()), group.getGroupAddress());
 		this.running = false;
 		this.machineInfo = machineInfo;
+		
+		this.multicastHandler.registerForGroup(group);
 	}
 	
 	public synchronized void startRunning() {
@@ -47,17 +49,18 @@ public class TopologyUpdateListener extends Thread{
 				//DatagramPacket packet = new DatagramPacket(receiveBuffer, 0, receiveBuffer.length);
 				//this.socket.receive(packet);
 				//System.out.println("[TopologyUpdatetListener "+machineInfo.id+"] HERE in topology lsintener");
-				
+				System.out.println("[TopologyUpdatetListener "+machineInfo.id+"]astept pachet ");
 				DatagramPacket packet = multicastHandler.receivePacketData();
-
+				System.out.println("[TopologyUpdatetListener "+machineInfo.id+"] Am primit pachet " + packet.getAddress() + ":" + packet.getPort());
 				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(packet.getData()));
 				TopologyRequest mg = (TopologyRequest) ois.readObject();
 				
 				System.out.println("[TopologyUpdatetListener "+machineInfo.id+"] Am primit update topologie " + packet.getAddress() + ":" + packet.getPort());
-				machineInfo.writeToLogFile(log, "Am primit update topologie " + packet.getAddress() + ":" + packet.getPort());
+				
+				machineInfo.writeToLogFile(log, "Am primit update topologie " + packet.getAddress().toString() + ":" + packet.getPort());
 				//StreamAnnouncement sa = (StreamAnnouncement) ois.readObject();
 				//System.out.println("[StreamAnnouncementListener-" + this.hashCode() + "] Am primit lista de stream-uri " + sa.streamIds + " de la " + packet.getAddress() + ":" + packet.getPort() + "(TCPPort=" + sa.TCPPort + "; UDPPort=" + sa.UDPPort + ")");
-				ois.close();
+				//ois.close();
 
 				
 				//process topology changes
@@ -66,6 +69,7 @@ public class TopologyUpdateListener extends Thread{
 				
 					machineInfo.neighbours = mg.connections[machineInfo.id];
 				}
+				
 			} catch (Exception e) {
 				System.err.println("[TopologyUpdatetListener-" + this.hashCode() + "] Exceptie la receive: " + e);
 				e.printStackTrace();

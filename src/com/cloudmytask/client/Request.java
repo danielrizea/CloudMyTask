@@ -24,7 +24,7 @@ public class Request implements Serializable {
 	public String message ;
 	public float loadFactor;
 	
-	
+	//TODO - mutat constante in Global
 		// req pentru a verifica daca un client e banned
 		public static final int R_IS_BANNED = 6;
 		// req pentru a adauga un client la lista de banned
