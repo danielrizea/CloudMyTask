@@ -21,6 +21,8 @@ public class NIOTCPTest {
 
 	
 	public static void main(String args[]){
+		
+		
 		ReadIni4jConfig var = new ReadIni4jConfig();
 		int central_ports[] = new int[1];
 		central_ports[0] = GlobalConfig.CENTRAL_UNIT_PORT;
@@ -51,7 +53,7 @@ public class NIOTCPTest {
 		ArrayList<NIOTCPClient> al = new ArrayList<NIOTCPClient>();
 		
 		try{
-			String filename = "testscript.py";
+			String filename = "test_sleep.py";
 			//citire script python
 			FileInputStream fstream = new FileInputStream(filename);
 			// Get the object of DataInputStream
@@ -72,13 +74,14 @@ public class NIOTCPTest {
 			r.scriptFileData = scriptData;
 			r.scriptFileName = filename;	
 			r.requestID = "id";
+			r.clientID = "client_ID_" ;
 			System.out.println("Send request");
 			
 			Request response = (Request) clientObject.sendRequest(r, "localhost", 5004, 60001);
 			System.out.println("Response from server : " + response.message);
 		}
 		catch(Exception e){
-			
+			System.out.println("Exceptie " + e.getMessage());
 		}
 		/*
 		for (int i = 0; i < 1; i++) {

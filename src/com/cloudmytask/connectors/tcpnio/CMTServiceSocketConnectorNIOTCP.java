@@ -8,6 +8,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,7 +21,7 @@ import com.cloudmytask.service.CMTPublicServiceInterface;
 import com.cloudmytask.utils.DataUtils;
 
 public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSocketConnector {
-	public static final int NumberOfThreadsInPool = 3;
+	public static final int NumberOfThreadsInPool = 4;
 	
 	private int ports[];
 	private boolean running;
@@ -80,7 +81,7 @@ public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSoc
 	}
 	
 	public void run() {
-		System.out.println("[NIOTCPServer] Am pornit");
+		System.out.println("[NIOTCPServer] Am pornit pe porturile " + Arrays.toString(this.ports));
 		
 		// Creeaza ServerSocketChannels.		
 		for (int i = 0; i < this.ports.length; i++) {

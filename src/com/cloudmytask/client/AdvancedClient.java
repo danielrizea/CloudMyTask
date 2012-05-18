@@ -51,8 +51,8 @@ public class AdvancedClient extends Thread {
 				r.requestID = r.hashCode() + "_" + r + "_";
 				r.clientID = clientID;
 				//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
-				Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
-				System.out.println("Response from serviceInstance at "+ instanceIP +": " + instancePort + " message :" + response.message);
+				Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, localPort);
+				System.out.println("[Client + " + clientID+"] Response from serviceInstance http://"+ instanceIP +":" + instancePort + " message :" + response.message);
 			
 			}
 		};
@@ -75,7 +75,7 @@ public class AdvancedClient extends Thread {
 		r.requestID = r.hashCode() + "_" + r + "_";
 		r.clientID = clientID;
 		//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
-		CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
+		CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, localPort);
 		//System.out.println("Response from serviceInstance at "+ instanceIP +": " + instancePort + " message :" + response.message);
 
 	}

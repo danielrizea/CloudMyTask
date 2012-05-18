@@ -18,6 +18,17 @@ public class DecodeJob implements Runnable {
 	public void run() {
 		Request req = (Request) DataUtils.decode(this.request);
 		
-		this.service.decideMachineAvailable(req, ci);
+		if (req.type == Request.REQUEST_PROCESS_SCRIPT) {
+			//decide if job to be executed on this machine or on others based on load
+			this.service.filterClients(req, ci);
+
+			System.out.println("Request submited to service ");
+		} else if (req.type == Request.REQUEST_GET_LOAD) {
+			//get the machine load
+			this.service.processMachineLoadRequest(req, ci);
+		} else if (req.type == Request.REQUEST_PASS_SCRIPT) {
+			
+			this.service.decideMachineAvailable(req, ci);
+		}
 	}
 }

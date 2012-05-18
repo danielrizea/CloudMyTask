@@ -125,7 +125,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	public void runScriptOnServer(Request request, String filename,
 			CallbackInterface ci) {
 
-		//System.out.println(LOGTag + " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
+		System.out.println(LOGTag + " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
 		machineDescription.writeToLogFile(LOGTag, " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
 		this.runScriptOnServerPool.submit(new RunScriptOnServerJob(this, request, filename, ci,machineDescription, requestsInExecution));
 	}

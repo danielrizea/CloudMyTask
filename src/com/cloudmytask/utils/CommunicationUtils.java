@@ -205,7 +205,8 @@ public class CommunicationUtils {
 			// Trimitem datele pe socket.
 			clientSocket.getOutputStream().write(encodedObject);
 		} catch (Exception e) {
-			System.err.println("[CMTClientObject NIOTCP-"+ "] Eroare la trimiterea cererii: " + e);
+			System.err.println("[CMTClientObject NIOTCP ] Eroare la trimiterea cererii pe portul  " + serverPort + " " + e);
+			//System.err.println("[CMTClientObject NIOTCP-"+ "] Eroare la trimiterea cererii: " + e);
 			e.printStackTrace();
 		}
 		

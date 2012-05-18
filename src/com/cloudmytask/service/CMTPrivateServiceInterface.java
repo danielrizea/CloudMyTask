@@ -8,6 +8,8 @@ public interface CMTPrivateServiceInterface {
 	
 	//public void decodeRequest(byte[] request, CallbackInterface ci);
 	
+	public void filterClients(Request request, CallbackInterface ci);
+	
 	public void decideMachineAvailable(Request request,CallbackInterface ci);
 	
 	//am nevoie aici de createServerScriptFile pentru a avea acces la ea din DecodeJob
@@ -19,6 +21,10 @@ public interface CMTPrivateServiceInterface {
 	
 	public void jobHandOff(Request request, CallbackInterface ci, int machineID);
 	
+	public void processMachineLoadRequest(Request request, CallbackInterface ci);
+	
 	public void sendAnswerToClient(Request request, CallbackInterface ci);
+	
+	
 
 }

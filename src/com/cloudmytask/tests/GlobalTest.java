@@ -10,6 +10,7 @@ import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.ReadIni4jConfig;
 import com.cloudmytask.centralservice.CentralServiceObject;
 import com.cloudmytask.centralservice.CentralServiceSocketConnectorUDP;
+import com.cloudmytask.client.AdvancedClient;
 import com.cloudmytask.client.Request;
 import com.cloudmytask.client.TCPClient;
 import com.cloudmytask.connectors.tcp.CMTServiceSocketConnectorTCP;
@@ -88,13 +89,59 @@ public class GlobalTest {
 			if(GlobalConfig.CommunicationType == GlobalConfig.NIOTCP){
 				// Porneste connector-ul de socketi.
 				CMTServiceSocketConnectorNIOTCP sssc = new CMTServiceSocketConnectorNIOTCP(ss, ports);
-				sssc.start();
+				sssc.startRunning();
 				nioTcpConnectorList.add(sssc);
 			}
 			
 			
 		}
 
+	}
+	
+	
+	public static void test_1(){
+		
+		ArrayList<AdvancedClient> advancedClients = new ArrayList<AdvancedClient>();
+		
+		int nr_clienti = 4;
+		
+		for(int i=0;i<nr_clienti;i++){
+			AdvancedClient client = new AdvancedClient("client_"+i, "localhost", GlobalConfig.CLIENT_COMM_PORT, 10000+i);
+			advancedClients.add(client);
+		}
+		
+		String filename = null;
+		String data = null;
+		
+			try{	
+				filename = "test_sleep.py";
+				//citire script python
+				FileInputStream fstream = new FileInputStream(filename);
+				// Get the object of DataInputStream
+				DataInputStream in = new DataInputStream(fstream);
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				String strLine;
+				//Read File Line By Line
+			  
+				String scriptData = "";
+				while ((strLine = br.readLine()) != null)   {
+					// Print the content on the console
+					//System.out.println (strLine);
+					scriptData += strLine + "\n";
+				}
+				//Close the input stream
+				data = scriptData;
+
+			}
+			catch(Exception e){
+				System.out.println("Exception in reading script file");
+			}
+			
+			for(int i=0;i<advancedClients.size();i++){
+				
+				advancedClients.get(i).submitScriptForExecutionBlockOnWaitingResult(data, filename);
+			}
+			
 	}
 	
 	
@@ -106,165 +153,27 @@ public class GlobalTest {
 
 		startService();
 		
+		test_1();
+		
 		final String clientID = "client_";
-		
-		
-		
-		
 
 
-		try{
-			
-			
-			final String filename = "test_sleep.py";
-			//citire script python
-			FileInputStream fstream = new FileInputStream(filename);
-			// Get the object of DataInputStream
-			DataInputStream in = new DataInputStream(fstream);
-			BufferedReader br = new BufferedReader(new InputStreamReader(in));
-			String strLine;
-			//Read File Line By Line
-		  
-			String scriptData = "";
-			while ((strLine = br.readLine()) != null)   {
-				// Print the content on the console
-				//System.out.println (strLine);
-				scriptData += strLine + "\n";
-			}
-			//Close the input stream
-			final String data = scriptData;
-
-			//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
-			ArrayList<Thread> clientRequests = new ArrayList<Thread>();
-			for(int i=0;i<4;i++){
-				
-				Thread th = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						Request r;
-						// TODO Auto-generated method stub
-						r = new Request("salut de la", Request.REQUEST_PROCESS_SCRIPT);			
-						r.scriptFileData = data;
-						r.scriptFileName = filename;	
-						r.requestID = r.hashCode() + "_" + r + "_";
-						r.clientID = clientID;
-						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
-						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
-						System.out.println("Response from server : " + response.message);
-					}
-				});
-				th.start();
-				
-				clientRequests.add(th);				
-			}
+		
 
 			try {
 				Thread.sleep(1000);
 			} catch (Exception e) {}
 			for(int i=0;i<8;i++){
 				
-				Thread th = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						Request r;
-						// TODO Auto-generated method stub
-						r = new Request("salut de la", Request.REQUEST_PROCESS_SCRIPT);			
-						r.scriptFileData = data;
-						r.scriptFileName = filename;	
-						r.requestID = r.hashCode() + "_" + r + "_";
-						r.clientID = clientID+1;
-						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
-						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
-						System.out.println("Response from server : " + response.message);
-					}
-				});
-				th.start();
-				
-				clientRequests.add(th);
-			}
-			try {
-				Thread.sleep(1000);
-			} catch (Exception e) {}
-			for(int i=0;i<8;i++){
-				
-				Thread th = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						Request r;
-						// TODO Auto-generated method stub
-						r = new Request("salut de la", Request.REQUEST_PROCESS_SCRIPT);			
-						r.scriptFileData = data;
-						r.scriptFileName = filename;	
-						r.requestID = r.hashCode() + "_" + r + "_";
-						r.clientID = clientID+2;
-						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
-						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
-						System.out.println("Response from server : " + response.message);
-					}
-				});
-				th.start();
-				
-				clientRequests.add(th);
-			}
-			
-			try {
-				Thread.sleep(1000);
-			} catch (Exception e) {}
-			for(int i=0;i<4;i++){
-				
-				Thread th = new Thread(new Runnable() {
-					
-					@Override
-					public void run() {
-						
-						Request r;
-						// TODO Auto-generated method stub
-						r = new Request("salut de la", Request.REQUEST_PROCESS_SCRIPT);			
-						r.scriptFileData = data;
-						r.scriptFileName = filename;	
-						r.requestID = r.hashCode() + "_" + r + "_";
-						r.clientID = clientID+3;
-						//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
-						Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, 60001);
-						System.out.println("Response from server : " + response.message);
-					}
-				});
-				th.start();
-				
-				clientRequests.add(th);
-			}
-			
-			for(Thread clientRequest : clientRequests){
-				clientRequest.join();
-			}
-		
-			//CommunicationUtils.sendRequest(r, "localhost", 5001, 60001);
-			
-		}
-		catch(Exception e){
-			
-		}
-		
-		
-		try {
-			Thread.sleep(30000);
-		} catch (Exception e) {}
-		
-		// Opreste connector-ul de socketi.
-		
+				/*
 		
 		for (CMTServiceSocketConnectorTCP service: tcpConnectorList) {
 			try {
 				service.stop();
 			} catch (Exception e) {}
 		}
+		*/
 		
-		
+	}
 	}
 }
