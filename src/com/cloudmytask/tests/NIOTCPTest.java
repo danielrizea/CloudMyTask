@@ -12,8 +12,6 @@ import com.cloudmytask.centralservice.CentralServiceObject;
 import com.cloudmytask.centralservice.CentralServiceSocketConnectorUDP;
 import com.cloudmytask.client.NIOTCPClient;
 import com.cloudmytask.client.Request;
-import com.cloudmytask.client.TCPClient;
-import com.cloudmytask.connectors.tcp.CMTServiceSocketConnectorTCP;
 import com.cloudmytask.connectors.tcpnio.CMTServiceSocketConnectorNIOTCP;
 import com.cloudmytask.service.CMTServiceObject;
 import com.cloudmytask.service.MachineInfo;
@@ -45,7 +43,7 @@ public class NIOTCPTest {
 		ss.start();
 
 
-		CMTServiceSocketConnectorNIOTCP server = new CMTServiceSocketConnectorNIOTCP(ports, ss);
+		CMTServiceSocketConnectorNIOTCP server = new CMTServiceSocketConnectorNIOTCP(ss,ports);
 		server.startRunning();
 				
 		CMTClientObject clientObject = new CMTClientObject();

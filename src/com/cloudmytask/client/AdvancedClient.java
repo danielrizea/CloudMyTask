@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.utils.CommunicationUtils;
 
+
 public class AdvancedClient extends Thread {
 
 	public String clientID;

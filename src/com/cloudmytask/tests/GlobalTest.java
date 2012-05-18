@@ -51,6 +51,7 @@ public class GlobalTest {
 		centralConnector = new CentralServiceSocketConnectorUDP(centralService, central_ports);
 		centralConnector.start();
 		
+		System.out.println("Values " + GlobalConfig.connections.length);
 		
 		for(int i=0;i<GlobalConfig.connections.length;i++){
 			
@@ -69,21 +70,21 @@ public class GlobalTest {
 			ss.start();
 			serviceObjectList.add(ss);
 			
-			
+			System.out.println("Start instance " + i  + " ");
 			if(GlobalConfig.CommunicationType == GlobalConfig.TCP){
 				// Porneste connector-ul de socketi.
 				CMTServiceSocketConnectorTCP sssc = new CMTServiceSocketConnectorTCP(ss, ports);
 				sssc.start();
 				tcpConnectorList.add(sssc);
 			}
-			
+			else
 			if(GlobalConfig.CommunicationType == GlobalConfig.UDP){
 				// Porneste connector-ul de socketi.
 				CMTServiceSocketConnectorUDP sssc = new CMTServiceSocketConnectorUDP(ss, ports);
 				sssc.start();
 				udpConnectorList.add(sssc);
 			}
-			
+			else
 			if(GlobalConfig.CommunicationType == GlobalConfig.NIOTCP){
 				// Porneste connector-ul de socketi.
 				CMTServiceSocketConnectorNIOTCP sssc = new CMTServiceSocketConnectorNIOTCP(ss, ports);
@@ -94,8 +95,6 @@ public class GlobalTest {
 			
 		}
 
-		
-		
 	}
 	
 	
@@ -105,6 +104,7 @@ public class GlobalTest {
 		ReadIni4jConfig var = new ReadIni4jConfig();
 
 
+		startService();
 		
 		final String clientID = "client_";
 		
