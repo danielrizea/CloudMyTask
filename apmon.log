@@ -1,0 +1,10 @@
+May 18, 2012 10:10:57 PM apmon.ApMon loadFile
+INFO: Loading file /home/daniel/Desktop/PDSD/lab/lab7/conf/destinations.conf...
+May 18, 2012 10:10:57 PM apmon.ApMon arrayInit
+INFO: adding destination: 127.0.0.1:8884
+May 18, 2012 10:10:57 PM apmon.ApMon setJobMonitoring
+INFO: Disabling job monitoring...
+May 18, 2012 10:10:57 PM apmon.ApMon setSysMonitoring
+INFO: Disabling system monitoring...
+May 18, 2012 10:10:57 PM apmon.ApMon setGenMonitoring
+INFO: Setting general information monitoring to false

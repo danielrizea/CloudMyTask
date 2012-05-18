@@ -116,12 +116,9 @@ public class GlobalTest {
 				});
 				th.start();
 				
-				clientRequests.add(th);
-
-				
+				clientRequests.add(th);				
 			}
 
-			
 			try {
 				Thread.sleep(1000);
 			} catch (Exception e) {}
