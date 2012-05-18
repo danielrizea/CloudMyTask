@@ -2,5 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="C:/Users/Dani/Desktop/lab7/lib/ini4j-0.5.2-SNAPSHOT.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Dani/Desktop/lab7/lib/ganymed-ssh2-build251beta1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

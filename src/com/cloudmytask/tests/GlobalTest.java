@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import com.cloudmytask.GlobalConfig;
+import com.cloudmytask.ReadIni4jConfig;
 import com.cloudmytask.centralservice.CentralServiceObject;
 import com.cloudmytask.centralservice.CentralServiceSocketConnectorUDP;
 import com.cloudmytask.client.Request;
@@ -27,7 +28,8 @@ public class GlobalTest {
 	public static void main(String args[]){
 		
 		
-		
+		ReadIni4jConfig var = new ReadIni4jConfig();
+
 		ArrayList<CMTServiceObject> serviceObjectList = new ArrayList<CMTServiceObject>();
 		ArrayList<CMTServiceSocketConnectorTCP> tcpConnectorList = new ArrayList<CMTServiceSocketConnectorTCP>();
 		ArrayList<CMTServiceSocketConnectorNIOTCP> nioTcpConnectorList = new ArrayList<CMTServiceSocketConnectorNIOTCP>();
