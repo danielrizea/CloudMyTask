@@ -36,11 +36,15 @@ public class CentralSocketConnectorUDPReceiveJob implements Runnable {
 			
 			try {
 				DatagramPacket packet = new DatagramPacket(buf, 0, buf.length);
+				// primeste un nou pachet
 				this.serverSocket.receive(packet);
 				InetAddress clientAddr = packet.getAddress();
 				int clientPort = packet.getPort();
+				
+				// retinem callback pentru a putea trimite rezultatele inapoi clientului
 				CentralSocketConnectorUDPCallbackObject scco = new CentralSocketConnectorUDPCallbackObject(this.serverSocket, clientAddr, clientPort);
 				
+				// retinere request
 				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(packet.getData()));
 				Request request = (Request) ois.readObject();
 				ois.close();
@@ -48,10 +52,12 @@ public class CentralSocketConnectorUDPReceiveJob implements Runnable {
 				// runnable care decide ce actiune sa ia 
 				CentralSocketConnectorUDPProcessJob processJob = new CentralSocketConnectorUDPProcessJob(ssi, scco, request);
 				
+				//TODO - de ce ne trebuie if-uri d mai jos?
+				
 				if(CentralServiceSocketConnectorUDP.behaviour == 0){
 					Thread newProcessThread = new Thread(processJob);
 					newProcessThread.start();
-					// to wait or not to wait with join
+					// TODO to wait or not to wait with join
 				}
 				
 				if(CentralServiceSocketConnectorUDP.behaviour == 1){

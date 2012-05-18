@@ -21,6 +21,7 @@ public class MulticastServerHandler {
 		this.socket = new DatagramSocket();
 	}
 	
+	// functie de trimitere a pachetului
 	public void sendPacket(Object update) throws IOException
 	{
 		ByteArrayOutputStream baos = new ByteArrayOutputStream();

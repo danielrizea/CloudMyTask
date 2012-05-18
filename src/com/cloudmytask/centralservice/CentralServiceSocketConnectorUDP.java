@@ -12,10 +12,12 @@ public class CentralServiceSocketConnectorUDP {
 	private ExecutorService receivePool;
 	private ExecutorService processPool;
 	
+	//*** PARAMETRIZAT
 	public static int processThreadsInPool = 10;
 	
 	// 0 -> 1 thread per request
 	// 1 - > use thread pool
+	//*** PARAMETRIZAT
 	public static int behaviour = 0;
 	
 	
@@ -25,7 +27,9 @@ public class CentralServiceSocketConnectorUDP {
 		this.ports = ports;
 		
 		// Creeaza un pool de thread-uri pe care se vor primi cererile (folosind socketi UDP).
+		// pool initial pentru primirea cererilor - threaduri ce se ocupa de cereri
 		this.receivePool = Executors.newFixedThreadPool(ports.length);
+		// pool pentru procesarea cererilor
 		this.processPool = Executors.newFixedThreadPool(processThreadsInPool);
 	}
 	
@@ -35,7 +39,8 @@ public class CentralServiceSocketConnectorUDP {
 
 			try {
 				// pe fiecare port se creaza un DatagramSocket: fol pentru primit/trimis pachete
-				DatagramSocket serverSocket = new DatagramSocket(port);
+				DatagramSocket serverSocket = new DatagramSocket(port);				
+				// TODO de ce avem nevoie de TO????
 				serverSocket.setSoTimeout(200000);
 				CentralSocketConnectorUDPReceiveJob rj = new CentralSocketConnectorUDPReceiveJob(serverSocket, this.ssi, this, processPool);
 				this.submitReceiveJob(rj);
@@ -61,30 +66,4 @@ public class CentralServiceSocketConnectorUDP {
 		this.receivePool.shutdown();		
 	}
 
-	/*
-	public static void main(String args[]) {
-		int ports[] = new int[2];
-		ports[0] = 5000;
-		ports[1] = 5001;
-		*/
-		/*
-		// Porneste serviciul de streaming.
-		StreamingService ss = new StreamingService();
-		ss.start();
-		
-		// Porneste connector-ul de socketi.
-		CMTServiceSocketConnector sssc = new CMTServiceSocketConnector(ss, ports);
-		sssc.start();
-		
-		try {
-			Thread.sleep(30000);
-		} catch (Exception e) {}
-		
-		// Opreste connector-ul de socketi.
-		sssc.stop();
-		
-		// Opreste serviciul de streaming.
-		ss.stop();
-		*/
-	//}
 }

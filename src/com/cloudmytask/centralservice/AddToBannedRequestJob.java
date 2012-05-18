@@ -35,10 +35,5 @@ public class AddToBannedRequestJob implements Runnable {
 			System.out.println("exception occured" + e.getMessage());
 			e.printStackTrace();		
 		}
-		
-		
-		
-		//trimite la urmatoarea etapa
-		//this.service.searchCachedResultRequest(req, ci);
 	}
 }

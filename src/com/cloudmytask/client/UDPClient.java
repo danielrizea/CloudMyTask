@@ -33,21 +33,25 @@ public class UDPClient extends Thread {
 				String filename = "testscript.py";
 				
 				//citire script python
-				  FileInputStream fstream = new FileInputStream(filename);
-				  // Get the object of DataInputStream
-				  DataInputStream in = new DataInputStream(fstream);
-				  BufferedReader br = new BufferedReader(new InputStreamReader(in));
-				  String strLine;
-				  //Read File Line By Line
-				  
-				  String scriptData = "";
-				  while ((strLine = br.readLine()) != null)   {
+				FileInputStream fstream = new FileInputStream(filename);
+				
+				// Get the object of DataInputStream
+				DataInputStream in = new DataInputStream(fstream);
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				String strLine;
+				
+				//Read File Line By Line
+				String scriptData = "";
+				while ((strLine = br.readLine()) != null)   {
 				  // Print the content on the console
 				  //System.out.println (strLine);
-				  scriptData += strLine + "\n";
-				  }
-				  //Close the input stream
-				  in.close();
+					
+					// formare string cu continutul fisierului
+					scriptData += strLine + "\n";
+				}
+				
+				//Close the input stream
+				in.close();
 				
 				
 				DatagramSocket socket = new DatagramSocket(this.clientPort);

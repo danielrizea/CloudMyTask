@@ -11,6 +11,7 @@ import java.net.Socket;
 import com.cloudmytask.utils.DataUtils;
 
 public class NIOTCPClient extends Thread {
+	// TODO - parametrizat
 	public static final int NumberOfClients = 4;
 	public static final int NumberOfMessages = 3;
 	
@@ -29,33 +30,36 @@ public class NIOTCPClient extends Thread {
 		try {
 				
 			String filename = "testscript.py";
+			
 			//citire script python
 			FileInputStream fstream = new FileInputStream(filename);
+			
 			// Get the object of DataInputStream
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
-			//Read File Line By Line
-		  
+			
+			//Read File Line By Line		  
 			String scriptData = "";
 			while ((strLine = br.readLine()) != null)   {
 				// Print the content on the console
 				//System.out.println (strLine);
+				
+				// formare string script
 				scriptData += strLine + "\n";
 			}
+			
 			//Close the input stream
 			in.close();
-			Request r = new Request("salut de la" +this.clientPort, 1);			
+			Request r = new Request("[Client] Hello from " +this.clientPort, 1);			
 			r.scriptFileData = scriptData;
 			r.scriptFileName = filename;				
-
-			
 			
 			//DatagramSocket socket = new DatagramSocket(this.clientPort);
 			Socket sockets = new Socket(this.serverIP, this.serverPort);
 			
 			
-			//facem conversia la byte !!!
+			//facem conversia la byte!
 			byte[] req = DataUtils.encode(r);
 			sockets.getOutputStream().write(req);
 
