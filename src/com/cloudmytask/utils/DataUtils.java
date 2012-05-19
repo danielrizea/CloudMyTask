@@ -62,10 +62,12 @@ public class DataUtils {
 		for (int i = 0; i < serializedObject.length; i++) {
 			encodedObject[i + 4] = serializedObject[i];
 		}
-		
+	
+		/*
 		System.out.println("Encoded Object :");
 		for(int i=0;i<encodedObject.length;i++)
 			System.out.print(encodedObject[i] +" ");
+		*/
 		//System.out.println();
 		return encodedObject;
 	}

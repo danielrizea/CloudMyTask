@@ -222,7 +222,7 @@ public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSoc
 		}
 		
 		byte[] currentBuf = rBuffer.array();
-		System.out.println("[NIOTCPServer] S-au citit " + numRead + " bytes de pe socket-ul asociat cheii " + key + " : " + currentBuf);
+		//System.out.println("[NIOTCPServer] S-au citit " + numRead + " bytes de pe socket-ul asociat cheii " + key + " : " + currentBuf);
 
 		byte[] newBuf = new byte[rbuflen + numRead];
 		
@@ -242,7 +242,7 @@ public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSoc
 		for(int i=0;i<newBuf.length;i++)
 			System.out.print(newBuf[i] +" ");
 		
-		System.out.println("newBuff " + newBuf.length + " l n " + ln);
+		//System.out.println("newBuff " + newBuf.length + " l n " + ln);
 		
 		int i=0;
 		byte[] request;
@@ -255,7 +255,7 @@ public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSoc
 			for (i = 0; i < newBufAux.length; i++) {
 				newBufAux[i] = newBuf[i + request.length];
 			}
-			System.out.println("aaaaaaa   newBuffAux " + newBufAux.length);
+			//System.out.println("aaaaaaa   newBuffAux " + newBufAux.length);
 			newBuf = newBufAux;
 			this.sobj.decodeRequest(request, new SocketConnectorNIOTCPCallbackObject(this, key));
 		}
@@ -290,7 +290,7 @@ public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSoc
 				wBuffer.flip();
 	
 				int numWritten = socketChannel.write(wBuffer);
-				System.out.println("[NIOTCPServer] Am scris " + numWritten + " bytes pe socket-ul asociat cheii " + key);
+				//System.out.println("[NIOTCPServer] Am scris " + numWritten + " bytes pe socket-ul asociat cheii " + key);
 	
 				if (numWritten < bbuf.length) {
 					byte[] newBuf = new byte[bbuf.length - numWritten];
@@ -318,7 +318,7 @@ public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSoc
 
 	// Metoda apelata de toate obiectele CallbackObject pentru a trimite rezultatele inapoi.
 	public void sendData(SelectionKey key, byte[] data) {
-		System.out.println("[NIOTCPServer] Se doreste scrierea a " + data.length + " bytes pe socket-ul asociat cheii " + key);
+		//System.out.println("[NIOTCPServer] Se doreste scrierea a " + data.length + " bytes pe socket-ul asociat cheii " + key);
 		
 		ArrayList<byte[]> wbuf = null;
 		
