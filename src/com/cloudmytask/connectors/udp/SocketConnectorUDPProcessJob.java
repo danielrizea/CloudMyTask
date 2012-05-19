@@ -23,15 +23,17 @@ public class SocketConnectorUDPProcessJob implements Runnable{
 	@Override
 	public void run() {
 		
-		if (request.type == 1) {
-
-			this.ssi.createServerScriptFile(request, scco);
+		if (request.type == Request.REQUEST_PROCESS_SCRIPT) {
+			//decide if job to be executed on this machine or on others based on load
+			this.ssi.filterClients(request, scco);
 			
 			System.out.println("Request submited to service ");
-		} else if (request.type == 2) {
-//TODO ????
-		} else if (request.type == 3) {
-			//TODO ????
+		} else if (request.type == Request.REQUEST_GET_LOAD) {
+			//get the machine load
+			this.ssi.processMachineLoadRequest(request, scco);
+		} else if (request.type == Request.REQUEST_PASS_SCRIPT) {
+			
+			this.ssi.decideMachineAvailable(request, scco);
 		}
 		
 	}

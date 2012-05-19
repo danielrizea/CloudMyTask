@@ -45,13 +45,15 @@ public class AvailableMachineJob implements Runnable {
 		
 		
 		if(currentJobs < maxJobs){
-			System.out.println("[CMTServiceObject] Execute on local machine " + currentJobs + " " + maxJobs+ " load factor:" + (float) currentJobs/maxJobs);
+			//System.out.println("[CMTServiceObject] Execute on local machine " + currentJobs + " " + maxJobs+ " load factor:" + (float) currentJobs/maxJobs);
 			executingRequests.put(request.requestID, request);
+			machineDescription.writeToLogFile("CMTServiceObject " + machineDescription.id, " Machine available load factor " + (float) currentJobs/maxJobs);
 			this.service.createServerScriptFile(request, ci);
 			
 			
 		}else{
 			System.out.println("[CMTServiceObject] Pass to another machine " + " load factor:" + (float)(currentJobs/maxJobs) );
+			machineDescription.writeToLogFile("CMTServiceObject " + machineDescription.id, " Machine not available, try to find neighbor. load factor " + (float) currentJobs/maxJobs);
 			this.service.getFreeNeighbor(request, ci);
 		}
 	}

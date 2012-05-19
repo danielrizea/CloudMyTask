@@ -37,6 +37,7 @@ public class RunScriptOnServerJob implements Runnable {
 
 			   String command = "python " + filename ;
   
+			  machineInfo.writeToLogFile("ServiceObject " + machineInfo.id, "Start executing script on machine script: " + filename + " request ID" + request.requestID);
 			  Process p = Runtime.getRuntime().exec(command);
 	          BufferedReader stdInput = new BufferedReader(new 
 	        		  InputStreamReader(p.getInputStream()));
@@ -77,6 +78,8 @@ public class RunScriptOnServerJob implements Runnable {
 	            e.printStackTrace();
 	            
 	        }
+		   
+			machineInfo.writeToLogFile("ServiceObject " + machineInfo.id, "Finish executing script on machine " + filename + " request ID " + request.requestID);   
 		
 		request.message = "executed on service instance " + machineInfo.id + "\n";
 		executingRequests.remove(request.requestID);

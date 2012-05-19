@@ -39,7 +39,10 @@ public class AdvancedClient extends Thread {
 		final String data = scriptData;
 		final String filename = scriptFileName;
 		final String instanceIP = this.serviceInstanceIP;
+		this.localPort ++ ;
+		final int localPortClientRequest = this.localPort;
 		final int instancePort = this.serviceInstancePort;
+		
 		Runnable taskRequest = new Runnable() {
 			
 			@Override
@@ -56,7 +59,8 @@ public class AdvancedClient extends Thread {
 				//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
 				
 				long startTime = new Date().getTime();
-				Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, localPort);
+				System.out.println("Send data to port " + localPortClientRequest);
+				Request response = (Request) CommunicationUtils.sendRequestGetResponse(r, "localhost", instancePort, localPortClientRequest);
 				
 				long stopTime = new Date().getTime();
 				apm.logMessage("time_between_requests_5", 0,  (int)(stopTime-startTime));
@@ -83,7 +87,7 @@ public class AdvancedClient extends Thread {
 		r.requestID = r.hashCode() + "_" + r + "_";
 		r.clientID = clientID;
 		//CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT + 0, 60001);
-		CommunicationUtils.sendRequest(r, "localhost", GlobalConfig.CLIENT_COMM_PORT, localPort);
+		CommunicationUtils.sendRequest(r, "localhost", instancePort, localPort);
 		//System.out.println("Response from serviceInstance at "+ instanceIP +": " + instancePort + " message :" + response.message);
 
 	}
