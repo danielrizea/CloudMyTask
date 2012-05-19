@@ -21,6 +21,7 @@ import com.cloudmytask.service.CMTPublicServiceInterface;
 import com.cloudmytask.utils.DataUtils;
 
 public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSocketConnector {
+	// TODO - const
 	public static final int NumberOfThreadsInPool = 4;
 	
 	private int ports[];
@@ -203,8 +204,6 @@ public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSoc
 			numRead = -1000000000;
 		}
 
-		//System.out.println("numRead=" + numRead);		
-		
 		if (numRead <= 0) {
 			System.out.println("[NIOTCPServer] S-a inchis socket-ul asociat cheii " + key);
 			key.channel().close();
@@ -259,19 +258,6 @@ public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSoc
 			newBuf = newBufAux;
 			this.sobj.decodeRequest(request, new SocketConnectorNIOTCPCallbackObject(this, key));
 		}
-		
-		//reface bufferul pentru partea de cerere care nu a fost luata complet
-		/*
-		byte[] finalBuf = null;
-		if (i > 0) {
-			finalBuf = new byte[newBuf.length - i];
-			for (int j = i; j < newBuf.length; j++) {
-				finalBuf[j - i] = newBuf[j];
-			}
-		} else {
-			finalBuf = newBuf;
-		}
-		*/
 		
 		this.readBuffers.put(key, newBuf);
 

@@ -13,6 +13,8 @@ public class WriteJob implements Runnable {
 	
 	public void run() {
 		try {
+			
+			// trimitere pachet pe sochet
 			this.server.doWrite(this.key);
 		} catch (Exception e) {
 			System.err.println("WriteJob exception: " + e);
