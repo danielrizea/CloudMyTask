@@ -63,7 +63,7 @@ public class AdvancedClient extends Thread {
 				long stopTime = new Date().getTime();
 				apm.logMessage("time_between_requests_5", 0,  (int)(stopTime-startTime));
 				
-				System.out.println("[Client + " + clientID+"] Response from serviceInstance http://"+ instanceIP +":" + instancePort + " message :" + response.message);
+				System.out.println("[Client + " + clientID+"] Response from serviceInstance http://"+ instanceIP +":" + instancePort + " message :" + response.message + " result:" + response.answer);
 			
 			}
 		};

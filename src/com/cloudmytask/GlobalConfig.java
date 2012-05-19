@@ -2,9 +2,9 @@ package com.cloudmytask;
 
 public class GlobalConfig {
 
-	public static int TCP = 0;
-	public static int UDP = 1;
-	public static int NIOTCP = 2;
+	public static final int TCP = 0;
+	public static final int UDP = 1;
+	public static final int NIOTCP = 2;
 	public static int CommunicationType ;
 	// 1 marcheaza conexiunea
 	public static int connections[][];

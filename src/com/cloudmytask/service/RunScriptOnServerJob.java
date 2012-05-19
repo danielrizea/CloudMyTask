@@ -31,7 +31,7 @@ public class RunScriptOnServerJob implements Runnable {
 	public void run() {
 		
 		//rulare script pe server
-		executingRequests.put(request.requestID, request);
+		//executingRequests.put(request.requestID, request);
 
 		   try {
 
@@ -85,7 +85,7 @@ public class RunScriptOnServerJob implements Runnable {
 	            
 	        }
 		
-		request.message = "executed on service instance " + machineInfo.id;
+		request.message = "executed on service instance " + machineInfo.id + "\n";
 		executingRequests.remove(request.requestID);
 		
 		

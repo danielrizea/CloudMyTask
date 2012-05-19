@@ -131,16 +131,19 @@ public class GlobalTest {
 			}
 			
 			Random rand = new Random();
-			int maxRequestsPerCicle = 10;
-			while(true){
+			int maxRequestsPerCicle = 30;
+			for(int t=0;t<1;t++){
 				for(int i=0;i<advancedClients.size();i++){
 			
-					int requests = rand.nextInt(maxRequestsPerCicle);
+					int requests = 100; 
+							//rand.nextInt(maxRequestsPerCicle);
+					
+							
 					for(int j=0;j<requests;j++)
 						advancedClients.get(i).submitScriptForExecutionBlockOnWaitingResult(data, filename);
 				
 					try {
-						Thread.sleep(7000);
+						Thread.sleep(500);
 					} catch (Exception e) {}
 					
 				}

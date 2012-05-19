@@ -13,7 +13,7 @@ public class ReadIni4jConfig {
 	public ReadIni4jConfig ()
 	{
 		
-	
+
 		int connections[][] = new int[100][100];
 		Ini ini;
 		try {
