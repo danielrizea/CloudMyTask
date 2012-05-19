@@ -45,6 +45,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		
 		@Override
 		public void run() {
+
 			// TODO Auto-generated method stub
 			while(true){
 				ApMonLog apm = ApMonLog.getInstance();
@@ -54,6 +55,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 					Thread.sleep(500);
 				}catch(Exception e){};
 			}
+
 		}
 	});
 	
@@ -124,7 +126,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	}
 	
 	public void decideMachineAvailable(Request request, CallbackInterface ci) {
-		// TODO Auto-generated method stub
+		
 		this.decideMachineAvailablePool.submit(new AvailableMachineJob(this, request, ci, machineDescription, requestsInExecution, clientRequestsInPeriod));
 	}
 	
@@ -149,7 +151,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 
 
 	public void getFreeNeighbor(Request request, CallbackInterface ci) {
-		// TODO Auto-generated method stub
+
 		this.discoverFreeNeighbotPool.submit(new DiscoverFreeNeighborJob(this, request, ci, clientObjectInterface, machineDescription));
 	}
 	
@@ -159,16 +161,13 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	}
 	
 	public void jobHandOff(Request request, CallbackInterface ci, int machineID) {
-		// TODO Auto-generated method stub
-		
-		//System.out.println(LOGTag + " start job hand-off");
+
 		machineDescription.writeToLogFile(LOGTag," start job hand-off" );
 		this.jobHandOffPool.submit(new HandOffJob(this, request, ci, clientObjectInterface, machineDescription, machineID, requestsWaitingAnswer));
 	}
 	
 
 	public void processMachineLoadRequest(Request request, CallbackInterface ci) {
-		// TODO Auto-generated method stub
 		
 		this.processMachineLoadRequestPool.submit(new ProcessMachineLoadRequestJob(this, request, ci, machineDescription, requestsInExecution));
 	}
@@ -195,6 +194,8 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		this.processMachineLoadRequestPool.shutdown();
 		
 		try {
+			
+			//TODO - param
 			this.decodePool.awaitTermination(100000, TimeUnit.MILLISECONDS);
 			this.sendResultPool.awaitTermination(100000, TimeUnit.MILLISECONDS); 
 			this.createScriptFilePool.awaitTermination(100000, TimeUnit.MILLISECONDS);

@@ -31,18 +31,11 @@ public class RunScriptOnServerJob implements Runnable {
 	public void run() {
 		
 		//rulare script pe server
-		executingRequests.put(request.requestID, request);
+		//executingRequests.put(request.requestID, request);
 
 		   try {
 
-			   //String[]callAndArgs= {"\"python\",\"my_python.py\",\"arg1\",\"arg2\"};
 			   String command = "python " + filename ;
-
-			 //  cmd /c c:\\path\\to\\python python\\test.py
-			  // String comm = "dir ";
-			 // System.out.println(command);
-
-			 // System.out.println("Request " + request);
   
 			  Process p = Runtime.getRuntime().exec(command);
 	          BufferedReader stdInput = new BufferedReader(new 
@@ -85,7 +78,7 @@ public class RunScriptOnServerJob implements Runnable {
 	            
 	        }
 		
-		request.message = "executed on service instance " + machineInfo.id;
+		request.message = "executed on service instance " + machineInfo.id + "\n";
 		executingRequests.remove(request.requestID);
 		
 		

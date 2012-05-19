@@ -13,10 +13,12 @@ public class CMTServiceSocketConnectorTCP {
 	private ExecutorService receivePool;
 	private ExecutorService processPool;
 	
+	// TODO - constanta
 	public static int processThreadsInPool = 4;
 	
 	// 0 -> 1 thread per request
 	// 1 - > use thread pool
+	// TODO
 	public static int behaviour = 0;
 	
 	
@@ -39,6 +41,7 @@ public class CMTServiceSocketConnectorTCP {
 				ServerSocket serverSocket = new ServerSocket(port);
 				serverSocket.setSoTimeout(200000);
 				
+				// creare job de receive pachete
 				SocketConnectorTCPReceiveJob rj = new SocketConnectorTCPReceiveJob(serverSocket, ssi, this, processPool);
 				this.submitReceiveJob(rj);
 				System.out.println("[CMTServiceSocketConnector] TCP Server socket pornit pe portul " + port);

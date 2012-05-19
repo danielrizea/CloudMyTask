@@ -2,9 +2,9 @@ package com.cloudmytask;
 
 public class GlobalConfig {
 
-	public static int TCP = 0;
-	public static int UDP = 1;
-	public static int NIOTCP = 2;
+	public static final int TCP = 0;
+	public static final int UDP = 1;
+	public static final int NIOTCP = 2;
 	public static int CommunicationType ;
 	// 1 marcheaza conexiunea
 	public static int connections[][];
@@ -13,34 +13,29 @@ public class GlobalConfig {
 	public static int MAX_REQUESTS_ALLOWED_IN_PERIOD ;
 	public static boolean BANN_ENABLE = false;
 	
-	//ip's
-	
-	
+
+	//porturi masina
 	public static int INSTANCE_COMM_PORT ;	
+	// exemplu: 2 porturi comunicare clienti, job-uri + comenzi 7000 + 2*id., 7000 + 2*(id-1).
 	public static int CLIENT_COMM_PORT ;
+	//portul pe care asculta masina centrala
 	public static int MACHINE_LOCAL_PORT;
 	public static int CENTRAL_UNIT_PORT ;
+	//multicast port
 	public static int MulticastPort;
 	public static long BroadcastPeriod ;
 	
-	//porturi masina
-	//local fiecare masina/serviciu booteaza pe 
-	//	2 porturi de comunicare  ID masina +5000 
-	// daca masina 1 doreste comunicare cu masina 2 aceasta se conecteaza pe 5002 a masinii 2
 	
-	//  2 porturi comunicare clienti, job-uri + comenzi 7000 + 2*id., 7000 + 2*(id-1).
-	
-	//2 seconds
-	
-	//portul pe care asculta masina centrala
-	
+		
+	//ip's	
 	public static String CENTRAL_UNIT_IP ;
+	//multicast ips
 	public static String machineIPs[] ;
 	public static String MulticastAddress;
 	
-	
-	//multicast IP
-
+	//parametri rulare teste
+	public static int NROFCLIENTS;
+	public static String SCRIPT;
 	
 	
 }

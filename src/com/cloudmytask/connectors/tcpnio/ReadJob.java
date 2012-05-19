@@ -13,6 +13,8 @@ public class ReadJob implements Runnable {
 	
 	public void run() {
 		try {
+			
+			// citire pachet decpe sochet
 			this.server.doRead(this.key);
 		} catch (Exception e) {
 			System.err.println("ReadJob exception: " + e);

@@ -30,8 +30,7 @@ public class NIOTCPTest {
 		CentralServiceObject centralService = new CentralServiceObject();
 		CentralServiceSocketConnectorUDP centralConnector = new CentralServiceSocketConnectorUDP(centralService, central_ports);
 		centralConnector.start();
-		
-		
+				
 		int ports[] = new int[2];
 		ports[0] = 5004;
 		ports[1] = 5005;
@@ -53,15 +52,14 @@ public class NIOTCPTest {
 		ArrayList<NIOTCPClient> al = new ArrayList<NIOTCPClient>();
 		
 		try{
-			String filename = "test_sleep.py";
+			String filename = GlobalConfig.SCRIPT;
 			//citire script python
 			FileInputStream fstream = new FileInputStream(filename);
 			// Get the object of DataInputStream
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
-			//Read File Line By Line
-		  
+			//Read File Line By Line		  
 			String scriptData = "";
 			while ((strLine = br.readLine()) != null)   {
 				// Print the content on the console
@@ -101,13 +99,8 @@ public class NIOTCPTest {
 			Thread.sleep(30000);
 		} catch (Exception e) {}
 		
-		// Opreste connector-ul de socketi.
-
+		// Opreste connector-ul de socketi
 		ss.stop();
-		
-		// Opreste serviciul de calcul scripturi.
-		//ss.stop();
-		
 		
 	}
 }

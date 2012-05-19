@@ -62,7 +62,6 @@ public class SocketConnectorTCPReceiveJob implements Runnable {
 				}
 				
 				if(CMTServiceSocketConnectorUDP.behaviour == 1){
-					
 					if(!processPool.isTerminated())
 						processPool.submit(processJob);
 				}
@@ -74,8 +73,6 @@ public class SocketConnectorTCPReceiveJob implements Runnable {
 			}
 		
 		}
-		
-		// join threads
 
 	}
 }

@@ -10,27 +10,15 @@ public class ApMonLog {
 	
 	private static ApMonLog singletonInstance = null;
 	
-	/** The Constant ConfigFileName. */
-	public static final String ConfigFileName = "/home/daniel/Desktop/PDSD/lab/lab7/conf/destinations.conf";
-	
-	/** The Constant LogMachineName. */
+	public static final String ConfigFileName = "configs/destinations.conf";
 	public static final String LogMachineName = "CMTTest";
 	
-	/** The name of test. */
+	//numele testului
 	public static final String TestName = "Testing_full_capacity";
-	
-	/** The apm. */
 	public ApMon apm = null;
 	
-	/**
-	 * Instantiates a new ap mon log.
-	 *
-	 * @param nameOfTest the name of test
-	 */
-	protected ApMonLog() {	
-	
+	protected ApMonLog() {		
 		apm = null;
-		
 		try {
 			apm = new ApMon(ConfigFileName);
 		} catch (Exception e) {
@@ -38,23 +26,15 @@ public class ApMonLog {
 			e.printStackTrace();
 		}
 	}
-
+	//returneaza instanta
 	public static ApMonLog getInstance(){
-		
 		if(singletonInstance == null){
 			singletonInstance = new ApMonLog();
 		}
-		
 		return singletonInstance;
 	}
 	
-	/**
-	 * Log message.
-	 *
-	 * @param parameterName the parameter name
-	 * @param parameterType the parameter type
-	 * @param parameterValue the parameter value
-	 */
+	//Log message
 	public void logMessage(String parameterName, Integer parameterType, Integer parameterValue){
 		
 		if(apm != null){
@@ -65,8 +45,7 @@ public class ApMonLog {
 				System.err.println("Exception in sending apm log message " + e.getMessage());
 			}
 		}
-		else
-		{
+		else{
 			System.err.println("The apm was not instantiated");
 		}
 	}

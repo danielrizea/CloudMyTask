@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import sun.security.action.GetLongAction;
+
 import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.ReadIni4jConfig;
 import com.cloudmytask.centralservice.CentralServiceObject;
@@ -41,8 +43,6 @@ public class TCPTest {
 		// Porneste serviciul de streaming.
 		CMTServiceObject ss = new CMTServiceObject(co,machineDescription,centralService);
 		
-		//ss.start();
-		
 		// Porneste connector-ul de socketi.
 		CMTServiceSocketConnectorTCP sssc = new CMTServiceSocketConnectorTCP(ss, ports);
 		sssc.start();
@@ -53,23 +53,18 @@ public class TCPTest {
 		ArrayList<TCPClient> al = new ArrayList<TCPClient>();
 		
 		try{
-			String filename = "test_sleep.py";
+			String filename = GlobalConfig.SCRIPT;
 			//citire script python
 			FileInputStream fstream = new FileInputStream(filename);
 			// Get the object of DataInputStream
 			DataInputStream in = new DataInputStream(fstream);
 			BufferedReader br = new BufferedReader(new InputStreamReader(in));
 			String strLine;
-			//Read File Line By Line
-		  
+			//Read File Line By Line  
 			String scriptData = "";
 			while ((strLine = br.readLine()) != null)   {
-				// Print the content on the console
-				//System.out.println (strLine);
 				scriptData += strLine + "\n";
 			}
-			//Close the input stream
-			
 
 			Request r = new Request("salut de la", Request.REQUEST_PROCESS_SCRIPT);			
 			r.scriptFileData = scriptData;

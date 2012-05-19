@@ -46,6 +46,7 @@ public class AvailableMachineJob implements Runnable {
 		
 		if(currentJobs < maxJobs){
 			System.out.println("[CMTServiceObject] Execute on local machine " + currentJobs + " " + maxJobs+ " load factor:" + (float) currentJobs/maxJobs);
+			executingRequests.put(request.requestID, request);
 			this.service.createServerScriptFile(request, ci);
 			
 			

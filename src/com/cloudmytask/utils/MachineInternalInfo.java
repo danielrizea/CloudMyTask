@@ -2,10 +2,7 @@ package com.cloudmytask.utils;
 
 import java.util.HashMap;
 
-
-
 public class MachineInternalInfo {
-
 	
 	public String ID;
 	public String name;
@@ -21,8 +18,8 @@ public class MachineInternalInfo {
 		getNeighboursInfo();
 	}
 	
-	 public void getAvailableProcessors() {
-	        
+	//updateaza numarul de proiectoare
+	 public void getAvailableProcessors() {     
 	       Runtime runtime = Runtime.getRuntime();    
 	       this.numberOfProcessors= runtime.availableProcessors();
 	       System.out.println("Number of processors available to the Java Virtual Machine: " + this.numberOfProcessors);

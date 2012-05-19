@@ -15,6 +15,7 @@ public class SocketConnectorNIOTCPCallbackObject implements CallbackInterface {
 		this.key = key;
 	}
 	
+	// trimite rezultat catre client
 	public void sendResult(Object result) {
 		try {
 			//Serializam rezultatul.

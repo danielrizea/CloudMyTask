@@ -15,20 +15,19 @@ import com.cloudmytask.client.Request;
 public class CommunicationUtils {
 
 	public CommunicationUtils(){
-		
 	}
 	
 	public static void sendRequest(Request request, String serverIP,int serverPort, int clientPort){
 		//decide on the communication method used
+	
+		if(GlobalConfig.CommunicationType == GlobalConfig.TCP)
+			sendTCPRequest(request, serverIP, serverPort);
 		
-				if(GlobalConfig.CommunicationType == GlobalConfig.TCP)
-					sendTCPRequest(request, serverIP, serverPort);
-				
-				if(GlobalConfig.CommunicationType == GlobalConfig.UDP)
-					sendUDPRequest(request, serverIP, serverPort, clientPort);
-				
-				if(GlobalConfig.CommunicationType == GlobalConfig.NIOTCP)
-					sendNIOTCPRequest(request, serverIP, serverPort);
+		if(GlobalConfig.CommunicationType == GlobalConfig.UDP)
+			sendUDPRequest(request, serverIP, serverPort, clientPort);
+		
+		if(GlobalConfig.CommunicationType == GlobalConfig.NIOTCP)
+			sendNIOTCPRequest(request, serverIP, serverPort);
 	}
 	
 	
@@ -49,9 +48,7 @@ public class CommunicationUtils {
 	private static void sendTCPRequest(Request request, String serverIP, int serverPort) {
 		Socket clientSocket=null;
 		try{
-			//DatagramSocket socket = new DatagramSocket(this.clientPort);
-			clientSocket = new Socket(serverIP, serverPort);
-			
+			clientSocket = new Socket(serverIP, serverPort);			
 			ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
 			oos.writeObject(request);
 			//oos.close();
@@ -61,23 +58,22 @@ public class CommunicationUtils {
 		}		
 	}
 
-
 	private static void sendUDPRequest(Request request, String serverIP,
-			int serverPort, int clientPort) {		
+		int serverPort, int clientPort) {		
+		//socket pentru comunicatia UDP
 		DatagramSocket socket = null;	
 		Request response = null;
-		
-		try{
-			
+		try{		
 			socket = new DatagramSocket(clientPort);
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ObjectOutputStream oos = new ObjectOutputStream(baos);
-				
+			
 			oos.writeObject(request);
 			byte[] outputBuf = baos.toByteArray();
 			
 			InetAddress serverAddr = InetAddress.getByName(serverIP);
 			DatagramPacket packet = new DatagramPacket(outputBuf, 0, outputBuf.length, serverAddr, serverPort);
+			// Trimitem datele 
 			socket.send(packet);
 			oos.close();
 			baos.close();
@@ -88,16 +84,13 @@ public class CommunicationUtils {
 	}
 
 
-	private static void sendNIOTCPRequest(Request request, String serverIP,
-			int serverPort) {		
+	private static void sendNIOTCPRequest(Request request, String serverIP, int serverPort) {		
 		Socket clientSocket = null;	
 		try {
 			// Ne conectam la server.
 			clientSocket = new Socket(serverIP, serverPort);
-			
 			// Serializam obiectul de tip Request si il codificam corespunzator.
 			byte[] encodedObject = DataUtils.encode(request);
-			
 			// Trimitem datele pe socket.
 			clientSocket.getOutputStream().write(encodedObject);
 		} catch (Exception e) {
@@ -112,9 +105,9 @@ public class CommunicationUtils {
 		Request response = null;
 		
 		try{
-			//DatagramSocket socket = new DatagramSocket(this.clientPort);
-			clientSocket = new Socket(serverIP, serverPort);
-			
+			// Ne conectam la server.
+			clientSocket = new Socket(serverIP, serverPort);			
+			// Trimitem datele pe socket.
 			ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());
 			oos.writeObject(request);
 			//oos.close();
@@ -122,10 +115,8 @@ public class CommunicationUtils {
 		}catch(Exception e){
 			System.err.println("[CMTClientObject] error in sending TCP Request : " +  e.getMessage());
 		}
-		
 		if(clientSocket != null)
-			System.out.println("Socket " + clientSocket.getLocalPort());
-		
+			System.out.println("Socket " + clientSocket.getLocalPort());		
 		 try {
 			  ObjectInputStream in = new ObjectInputStream(clientSocket.getInputStream());
 	          //receive response request object

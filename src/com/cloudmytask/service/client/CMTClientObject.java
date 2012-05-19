@@ -39,7 +39,6 @@ public class CMTClientObject implements CMTClientPrivateInterface, CMTClientPubl
 		Request response = null;
 		
 		try{
-			//DatagramSocket socket = new DatagramSocket(this.clientPort);
 			clientSocket = new Socket(serverIP, serverPort);
 			
 			ObjectOutputStream oos = new ObjectOutputStream(clientSocket.getOutputStream());

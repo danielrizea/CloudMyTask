@@ -19,21 +19,15 @@ import com.cloudmytask.connectors.udp.CMTServiceSocketConnectorUDP;
 import com.cloudmytask.service.CMTServiceObject;
 import com.cloudmytask.service.MachineInfo;
 import com.cloudmytask.service.client.CMTClientObject;
-import com.cloudmytask.utils.CommunicationUtils;
 
 public class GlobalTest {
 
 	
-	public static ArrayList<CMTServiceObject>  serviceObjectList = null;
-	
+	public static ArrayList<CMTServiceObject>  serviceObjectList = null;	
 	public static ArrayList<CMTServiceSocketConnectorTCP> tcpConnectorList = null;
-	
 	public static ArrayList<CMTServiceSocketConnectorNIOTCP> nioTcpConnectorList = null;
-	
 	public static ArrayList<CMTServiceSocketConnectorUDP> udpConnectorList = null;
-	
 	public static CentralServiceObject centralService = null;
-	
 	public static CentralServiceSocketConnectorUDP centralConnector = null;
 	
 	public static void startService(){
@@ -54,9 +48,8 @@ public class GlobalTest {
 		
 		System.out.println("Values " + GlobalConfig.connections.length);
 		
+		//start clients
 		for(int i=0;i<GlobalConfig.connections.length;i++){
-			
-			
 			CMTClientObject clientObject = new CMTClientObject();
 			
 			int ports[] = new int[3];
@@ -72,6 +65,7 @@ public class GlobalTest {
 			serviceObjectList.add(ss);
 			
 			System.out.println("Start instance " + i  + " ");
+			// Porneste connector-ul de socketi in functie de tipul de conexiune setat
 			if(GlobalConfig.CommunicationType == GlobalConfig.TCP){
 				// Porneste connector-ul de socketi.
 				CMTServiceSocketConnectorTCP sssc = new CMTServiceSocketConnectorTCP(ss, ports);
@@ -92,22 +86,17 @@ public class GlobalTest {
 				sssc.startRunning();
 				nioTcpConnectorList.add(sssc);
 			}
-			
-			
 		}
-
 	}
-	
 	
 	public static void test_1(){
 		
 		ArrayList<AdvancedClient> advancedClients = new ArrayList<AdvancedClient>();
 		
-		//obtinere singleton testare
+		//obtinere singleton testare pentru MonALISA
 		ApMonLog apm = ApMonLog.getInstance();
 		
-		
-		int nr_clienti = 4;
+		int nr_clienti = GlobalConfig.NROFCLIENTS;
 		
 		for(int i=0;i<nr_clienti;i++){
 			AdvancedClient client = new AdvancedClient("client_"+i, "localhost", GlobalConfig.CLIENT_COMM_PORT, 10000+i);
@@ -118,7 +107,8 @@ public class GlobalTest {
 		String data = null;
 		
 			try{	
-				filename = "test_sleep.py";
+				//fisierul ce va fi trimis de un client pentru a 
+				filename = GlobalConfig.SCRIPT;
 				//citire script python
 				FileInputStream fstream = new FileInputStream(filename);
 				// Get the object of DataInputStream
@@ -126,7 +116,6 @@ public class GlobalTest {
 				BufferedReader br = new BufferedReader(new InputStreamReader(in));
 				String strLine;
 				//Read File Line By Line
-			  
 				String scriptData = "";
 				while ((strLine = br.readLine()) != null)   {
 					// Print the content on the console
@@ -142,16 +131,19 @@ public class GlobalTest {
 			}
 			
 			Random rand = new Random();
-			int maxRequestsPerCicle = 10;
-			while(true){
+			int maxRequestsPerCicle = 30;
+			for(int t=0;t<1;t++){
 				for(int i=0;i<advancedClients.size();i++){
 			
-					int requests = rand.nextInt(maxRequestsPerCicle);
+					int requests = 100; 
+							//rand.nextInt(maxRequestsPerCicle);
+					
+							
 					for(int j=0;j<requests;j++)
 						advancedClients.get(i).submitScriptForExecutionBlockOnWaitingResult(data, filename);
 				
 					try {
-						Thread.sleep(7000);
+						Thread.sleep(500);
 					} catch (Exception e) {}
 					
 				}
@@ -163,13 +155,8 @@ public class GlobalTest {
 		
 		
 		ReadIni4jConfig var = new ReadIni4jConfig();
-
-
 		startService();
-		
 		test_1();
-		
-		final String clientID = "client_";
 
 	}
 }
