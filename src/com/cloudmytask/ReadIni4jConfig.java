@@ -24,13 +24,12 @@ public class ReadIni4jConfig {
 			return;
 		}
 		
-		// prelucrare matrice de adiacenta
+
+		//prelucrare date din [connections]
 		Ini.Section iniConnection = ini.get("connections");
+		// prelucrare matrice de adiacenta
 		String connectionMatrix = iniConnection.get("matrix");
 		int connectionMatrixLength = connectionMatrix.length();
-
-		
-		
 		
 		int i = 0 ; 
 		int nrCol = 0;
@@ -65,7 +64,6 @@ public class ReadIni4jConfig {
 		
 		//dimensiunea fixa a matricei de vecini
 		int array_dim = nrCol -1;
-		
 		int new_connections[][] = new int[array_dim][array_dim];
 		
 		for(i=0;i<array_dim;i++)
@@ -74,17 +72,19 @@ public class ReadIni4jConfig {
 		
 		GlobalConfig.connections = new_connections;
 		
-	
 		GlobalConfig.MAX_REQUEST_PERIOD = Integer.parseInt(iniConnection.get("MAX_REQUEST_PERIOD"));
 		GlobalConfig.MAX_REQUESTS_ALLOWED_IN_PERIOD = Integer.parseInt(iniConnection.get("MAX_REQUESTS_ALLOWED_IN_PERIOD"));
 		
-		//prelucrare tip protocol
-		
+		//prelucrare date din  [protocol]
 		Ini.Section iniProtocol = ini.get("protocol");
 		GlobalConfig.CommunicationType = Integer.parseInt(iniProtocol.get("type"));
 		
-		//prelucrare fisier addressConfig.ini
+		//prelucrare date din  [runningTests]
+		Ini.Section inirunningTests = ini.get("runningTests");
+		GlobalConfig.NROFCLIENTS = Integer.parseInt(inirunningTests.get("NROFCLIENTS"));
+		GlobalConfig.SCRIPT = inirunningTests.get("SCRIPT");
 		
+		//prelucrare fisier addressConfig.ini
 		try {
 			ini = new Ini(new File(addressConfigFileName));
 		} catch (Exception e) {
@@ -92,6 +92,7 @@ public class ReadIni4jConfig {
 			e.printStackTrace();
 			return;
 		}
+		//prelucrare date din [ports]
 		Ini.Section iniPorts = ini.get("ports");
 		GlobalConfig.CENTRAL_UNIT_PORT = Integer.parseInt(iniPorts.get("CENTRAL_UNIT_PORT"));
 		GlobalConfig.INSTANCE_COMM_PORT = Integer.parseInt(iniPorts.get("INSTANCE_COMM_PORT"));
@@ -100,7 +101,7 @@ public class ReadIni4jConfig {
 		GlobalConfig.MulticastPort = Integer.parseInt(iniPorts.get("MulticastPort"));
 		GlobalConfig.BroadcastPeriod = Integer.parseInt(iniPorts.get("BroadcastPeriod"));
 		
-	
+		//prelucrare date din [ips]	
 		Ini.Section iniIPs = ini.get("ips");
 		GlobalConfig.CENTRAL_UNIT_IP = iniIPs.get("CENTRAL_UNIT_IP");
 		GlobalConfig.MulticastAddress = iniIPs.get("MulticastAddress");

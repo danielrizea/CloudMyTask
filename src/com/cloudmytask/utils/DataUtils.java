@@ -5,12 +5,6 @@ import java.io.*;
 public class DataUtils {
 	public static byte[] encrypt(byte [] b) {
 		byte[] bnew = new byte[b.length];
-
-		/*
-		for (int i = 4; i < b.length; i++) {
-			System.out.println("[DataUtils.encrypt] pos=" + i + "; byte=" + b[i]);
-		}
-		*/
 		
 		for (int i = 0; i < 4; i++) {
 			bnew[i] = b[i];
@@ -36,14 +30,6 @@ public class DataUtils {
 			bnew[i] = (byte) ((((int) b[i] + 128 + 256 - 22) % 256) - 128);
 		}
 
-		//System.out.println("[DataUtils.decrypt] Encoded len=" + bnew[0] + ":" + bnew[1] + ":" + bnew[2] + ":" + bnew[3]);
-
-		/*
-		for (int i = 4; i < b.length; i++) {
-			System.out.println("[DataUtils.decrypt] pos=" + i + "; byte=" + bnew[i]);
-		}
-		*/
-
 		return bnew;
 	}
 
@@ -63,12 +49,8 @@ public class DataUtils {
 		}
 		
 		// Apoi adaugam pe primii 4 bytes dimensiunea sa.
-		//System.out.println("[DataUtils.encode] Dimensiunea obiectului codificat: " + serializedObject.length);
-		
 		byte[] encodedObject = new byte[serializedObject.length + 4];
-		
-		
-		//System.out.println("Dimensiune pe bune " + encodedObject.length);
+		//serializare
 		int len = serializedObject.length;
 		encodedObject[0] = (byte) (((len >> 24) % 256) - 128);
 		encodedObject[1] = (byte) (((len >> 16) % 256) - 128);
@@ -76,21 +58,18 @@ public class DataUtils {
 		encodedObject[3] = (byte) ((len % 256) - 128);
 		
 		int ln = ((128 + (int) encodedObject[0]) << 24) + ((128 + (int) encodedObject[1]) << 16) + ((128 + (int) encodedObject[2]) << 8) + (128 + (int)encodedObject[3] );
-		
-		//System.out.println("[DataUtils.encode] Encoded len=" + encodedObject[0] + ":" + encodedObject[1] + ":" + encodedObject[2] + ":" + encodedObject[3]  + " " + ln );
-
 
 		for (int i = 0; i < serializedObject.length; i++) {
 			encodedObject[i + 4] = serializedObject[i];
 		}
 		
-		//System.out.println("Encode value :" + encodedObject.length);
+		System.out.println("Encoded Object :");
 		for(int i=0;i<encodedObject.length;i++)
 			System.out.print(encodedObject[i] +" ");
 		//System.out.println();
 		return encodedObject;
 	}
-	
+	//decodeaza mesajul
 	public static Object decode(byte[] buffer) {
 		if (buffer.length < 4)
 			return null;
@@ -98,16 +77,12 @@ public class DataUtils {
 		if (buffer.length < 4) {
 			return null;
 		}
-
-		//System.out.println("[DataUtils.decode] Encoded len=" + buffer[0] + ":" + buffer[1] + ":" + buffer[2] + ":" + buffer[3]);
-
+		//determina lungimea
 		int len = ((128 + (int) buffer[0]) << 24) + ((128 + (int) buffer[1]) << 16) + ((128 + (int) buffer[2]) << 8) + (128 + (int) buffer[3]);
 		if (buffer.length != 4 + len) {
 			return null;
 		}
 
-		//System.out.println("[DataUtils.decode] Dimensiunea obiectului decodificat: " + len);
-		
 		byte[] serializedObject = new byte[buffer.length - 4];
 		for (int i = 0; i < len; i++) {
 			serializedObject[i] = buffer[i + 4];
@@ -123,15 +98,14 @@ public class DataUtils {
 			return null;			
 		}	
 	}
-
+	// functie folosita cand nu se primeste tot mesajul
 	public static byte[] getCompleteRequest(byte[] buffer) {
 		if (buffer.length < 4 ) {
 			return null;
 		}
 		
 		int len = ((128 + (int) buffer[0]) << 24) + ((128 + (int) buffer[1]) << 16) + ((128 + (int) buffer[2]) << 8) + (128 + (int) buffer[3]);
-		//System.out.println("[DataUtils.getCompleteRequest] Dimensiunea request-ului: " + len + " (numar bytes disponibili=" + (buffer.length - 4) + ")");
-		
+
 		if (buffer.length < 4 + len) {
 			return null;
 		}
@@ -139,9 +113,7 @@ public class DataUtils {
 		byte[] request = new byte[len + 4];
 		for (int i = 0; i < len + 4; i++) {
 			request[i] = buffer[i];
-			//System.out.print( i  + "/"+ (len + 4) + ";  ");
 		}
-		//System.out.println();
 
 		return request;		
 	}

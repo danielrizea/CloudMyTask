@@ -51,7 +51,7 @@ public class UDPTest {
 		CMTClientObject clientObject = new CMTClientObject();
 		
 		try{
-			String filename = "testscript.py";
+			String filename = GlobalConfig.SCRIPT;
 			//citire script python
 			FileInputStream fstream = new FileInputStream(filename);
 			// Get the object of DataInputStream
