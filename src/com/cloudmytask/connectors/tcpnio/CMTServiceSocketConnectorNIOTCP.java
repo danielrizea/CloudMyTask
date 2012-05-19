@@ -17,11 +17,12 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
+import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.service.CMTPublicServiceInterface;
 import com.cloudmytask.utils.DataUtils;
 
 public class CMTServiceSocketConnectorNIOTCP extends Thread implements NIOTCPSocketConnector {
-	// TODO - const
+	
 	public static final int NumberOfThreadsInPool = 4;
 	
 	private int ports[];

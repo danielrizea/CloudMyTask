@@ -82,6 +82,15 @@ public class ReadIni4jConfig {
 		//prelucrare date din  [runningTests]
 		Ini.Section inirunningTests = ini.get("runningTests");
 		GlobalConfig.NROFCLIENTS = Integer.parseInt(inirunningTests.get("NROFCLIENTS"));
+		GlobalConfig.BEHAVIOUR = Integer.parseInt(inirunningTests.get("BEHAVIOUR"));
+		GlobalConfig.processThreadsInPool = Integer.parseInt(inirunningTests.get("processThreadsInPool"));	
+		GlobalConfig.NRTHREADS_CENTRALSERVICE = Integer.parseInt(inirunningTests.get("NRTHREADS_CENTRALSERVICE"));
+		GlobalConfig.NRTHREADS_SERVICE = Integer.parseInt(inirunningTests.get("NRTHREADS_SERVICE"));
+ 		
+		GlobalConfig.NRTHREADS_CREATESCRIPTFILE = Integer.parseInt(inirunningTests.get("NRTHREADS_CREATESCRIPTFILE"));
+		GlobalConfig.NRTHREADS_JOBHANDOFF = Integer.parseInt(inirunningTests.get("NRTHREADS_JOBHANDOFF"));
+		
+		
 		GlobalConfig.SCRIPT = inirunningTests.get("SCRIPT");
 		
 		//prelucrare fisier addressConfig.ini

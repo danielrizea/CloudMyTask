@@ -4,6 +4,7 @@ import java.net.ServerSocket;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.service.CMTPublicServiceInterface;
 
 public class CMTServiceSocketConnectorTCP {
@@ -13,13 +14,8 @@ public class CMTServiceSocketConnectorTCP {
 	private ExecutorService receivePool;
 	private ExecutorService processPool;
 	
-	// TODO - constanta
-	public static int processThreadsInPool = 4;
-	
-	// 0 -> 1 thread per request
-	// 1 - > use thread pool
-	// TODO
-	public static int behaviour = 0;
+	public static int processThreadsInPool = GlobalConfig.processThreadsInPool;
+	public static int behaviour = GlobalConfig.BEHAVIOUR;
 	
 	
 	public CMTServiceSocketConnectorTCP(CMTPublicServiceInterface ssi, int ports[]) {

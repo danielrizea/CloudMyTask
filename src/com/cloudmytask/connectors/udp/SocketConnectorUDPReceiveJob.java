@@ -47,14 +47,12 @@ public class SocketConnectorUDPReceiveJob implements Runnable {
 				
 				// runnable care decide ce actiune sa ia 
 				SocketConnectorUDPProcessJob processJob = new SocketConnectorUDPProcessJob(ssi, scco, request);
-				
-				//TODO -param
+		
 				if(CMTServiceSocketConnectorUDP.behaviour == 0){
 					Thread newProcessThread = new Thread(processJob);
 					newProcessThread.start();
 					// to wait or not to wait with join
 				}
-				//TODO -param				
 				if(CMTServiceSocketConnectorUDP.behaviour == 1){
 					
 					if(!processPool.isTerminated())

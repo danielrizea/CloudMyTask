@@ -22,9 +22,6 @@ public class SocketConnectorTCPProcessJob implements Runnable{
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
-		
 		if (request.type == 1) {
 			//StreamObject sobj = request.sobj;
 			//upload
