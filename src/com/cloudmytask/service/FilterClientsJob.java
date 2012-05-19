@@ -30,7 +30,7 @@ public class FilterClientsJob implements Runnable {
 	}
 	
 	public void run() {
-	
+		// verifica daca un client este sau nu in banned list
 		//send to client// wait for response;
 		
 		if(GlobalConfig.BANN_ENABLE == true){

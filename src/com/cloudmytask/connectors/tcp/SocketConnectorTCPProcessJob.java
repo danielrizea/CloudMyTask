@@ -21,8 +21,6 @@ public class SocketConnectorTCPProcessJob implements Runnable{
 	}
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		
 		
 		if (request.type == Request.REQUEST_PROCESS_SCRIPT) {
 			//decide if job to be executed on this machine or on others based on load

@@ -12,15 +12,18 @@ public class CMTServiceSocketConnectorUDP {
 	private ExecutorService receivePool;
 	private ExecutorService processPool;
 	
+	//TODO param
 	public static int processThreadsInPool = 10;
 	
 	// 0 -> 1 thread per request
 	// 1 - > use thread pool
+	//TODO param
 	public static int behaviour = 0;
 	
 	
 	public CMTServiceSocketConnectorUDP(CMTPublicServiceInterface ssi, int ports[]) {
 		this.ssi = ssi;
+	
 		//pe ce porturi se creaza sockets
 		this.ports = ports;
 		
@@ -61,30 +64,4 @@ public class CMTServiceSocketConnectorUDP {
 		this.receivePool.shutdown();		
 	}
 
-	/*
-	public static void main(String args[]) {
-		int ports[] = new int[2];
-		ports[0] = 5000;
-		ports[1] = 5001;
-		*/
-		/*
-		// Porneste serviciul de streaming.
-		StreamingService ss = new StreamingService();
-		ss.start();
-		
-		// Porneste connector-ul de socketi.
-		CMTServiceSocketConnector sssc = new CMTServiceSocketConnector(ss, ports);
-		sssc.start();
-		
-		try {
-			Thread.sleep(30000);
-		} catch (Exception e) {}
-		
-		// Opreste connector-ul de socketi.
-		sssc.stop();
-		
-		// Opreste serviciul de streaming.
-		ss.stop();
-		*/
-	//}
 }
