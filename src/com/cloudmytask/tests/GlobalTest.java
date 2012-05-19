@@ -417,7 +417,7 @@ public class GlobalTest {
 		//test_1();
 		//test_2();
 		//test_rafala();
-		//test_normal();
-		test_full();
+		test_normal();
+		//test_full();
 	}
 }
