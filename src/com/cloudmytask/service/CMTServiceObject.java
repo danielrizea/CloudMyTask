@@ -41,15 +41,21 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	
 	public String LOGTag = "CMTServiceObject";
 	
-	public Thread checkStatus = new Thread(new Runnable() {
+	public Thread checkStatusThread = new Thread(new Runnable() {
 		
 		@Override
 		public void run() {
 
-			ApMonLog apm = ApMonLog.getInstance();
-		
-			apm.logMessage("serviceInstanceLoad_"+machineDescription.id, 0, (requestsInExecution.size()*100)/machineDescription.getMaxJobsInExecution());
-			
+			// TODO Auto-generated method stub
+			while(true){
+				ApMonLog apm = ApMonLog.getInstance();
+				apm.logMessage("serviceInstanceLoad_"+machineDescription.id, 0, (requestsInExecution.size()*100)/machineDescription.getMaxJobsInExecution());
+				
+				try{
+					Thread.sleep(500);
+				}catch(Exception e){};
+			}
+
 		}
 	});
 	
@@ -100,6 +106,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 			System.out.println("[CMTServiceObject] error in creating group" + e.getMessage());
 		}
 		
+		checkStatusThread.start();
 	}
 	
 
