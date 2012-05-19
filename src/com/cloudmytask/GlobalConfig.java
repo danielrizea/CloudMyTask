@@ -1,5 +1,7 @@
 package com.cloudmytask;
 
+import java.util.concurrent.Executors;
+
 public class GlobalConfig {
 
 	public static final int TCP = 0;
@@ -25,8 +27,21 @@ public class GlobalConfig {
 	public static int MulticastPort;
 	public static long BroadcastPeriod ;
 	
+	// 0 -> 1 thread per request
+	// 1 - > use thread pool
+	public static int BEHAVIOUR;
+	public static int processThreadsInPool;
 	
-		
+	
+	public static int NRTHREADS_CENTRALSERVICE; 
+	public static int NRTHREADS_SERVICE;
+	
+	public static int NRTHREADS_CREATESCRIPTFILE; 
+	public static int NRTHREADS_RUNSCRIPTONSERVER; 
+	public static int NRTHREADS_JOBHANDOFF;
+	
+
+	
 	//ip's	
 	public static String CENTRAL_UNIT_IP ;
 	//multicast ips

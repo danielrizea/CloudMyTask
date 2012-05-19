@@ -52,12 +52,10 @@ public class CentralSocketConnectorUDPReceiveJob implements Runnable {
 				// runnable care decide ce actiune sa ia 
 				CentralSocketConnectorUDPProcessJob processJob = new CentralSocketConnectorUDPProcessJob(ssi, scco, request);
 				
-				//TODO - de ce ne trebuie if-uri d mai jos?
-				
+				//if-uri pentru a face behaviour
 				if(CentralServiceSocketConnectorUDP.behaviour == 0){
 					Thread newProcessThread = new Thread(processJob);
 					newProcessThread.start();
-					// TODO to wait or not to wait with join
 				}
 				
 				if(CentralServiceSocketConnectorUDP.behaviour == 1){

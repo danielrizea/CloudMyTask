@@ -140,8 +140,7 @@ public class GlobalTest {
 			
 					int requests = 4; 
 							//rand.nextInt(maxRequestsPerCicle);
-					
-							
+											
 					for(int j=0;j<requests;j++)
 						advancedClients.get(i).submitScriptForExecutionBlockOnWaitingResult(data, filename);
 				

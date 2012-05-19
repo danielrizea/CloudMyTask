@@ -9,7 +9,7 @@ public interface CMTPublicServiceInterface {
 	public void filterClients(Request request, CallbackInterface ci);
 	
 	public void decodeRequest(byte[] request, CallbackInterface ci);
-		
+	
 	// verifica starea de load a masinii
 	public void decideMachineAvailable(Request request, CallbackInterface ci);
 	

@@ -3,6 +3,7 @@ package com.cloudmytask.centralservice;
 import java.net.*;
 import java.util.concurrent.*;
 
+import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.service.CMTPublicServiceInterface;
 
 public class CentralServiceSocketConnectorUDP {
@@ -12,13 +13,8 @@ public class CentralServiceSocketConnectorUDP {
 	private ExecutorService receivePool;
 	private ExecutorService processPool;
 	
-	//*** PARAMETRIZAT
-	public static int processThreadsInPool = 10;
-	
-	// 0 -> 1 thread per request
-	// 1 - > use thread pool
-	//*** PARAMETRIZAT
-	public static int behaviour = 0;
+	public static int behaviour = GlobalConfig.BEHAVIOUR;
+	public static int processThreadsInPool = GlobalConfig.processThreadsInPool;
 	
 	
 	public CentralServiceSocketConnectorUDP(CentralPublicServiceInterface  ssi, int ports[]) {
@@ -40,7 +36,6 @@ public class CentralServiceSocketConnectorUDP {
 			try {
 				// pe fiecare port se creaza un DatagramSocket: fol pentru primit/trimis pachete
 				DatagramSocket serverSocket = new DatagramSocket(port);				
-				// TODO de ce avem nevoie de TO????
 				serverSocket.setSoTimeout(200000);
 				CentralSocketConnectorUDPReceiveJob rj = new CentralSocketConnectorUDPReceiveJob(serverSocket, this.ssi, this, processPool);
 				this.submitReceiveJob(rj);

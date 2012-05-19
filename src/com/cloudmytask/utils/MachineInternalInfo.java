@@ -14,7 +14,7 @@ public class MachineInternalInfo {
 	public MachineInternalInfo (String ID){
 		this.ID = ID;
 		getAvailableProcessors();
-		//get neighbors -> TODO 
+
 		getNeighboursInfo();
 	}
 	
@@ -26,7 +26,7 @@ public class MachineInternalInfo {
 	        
 	}
 	 
-	 //TODO 
+	
 	 public void getNeighboursInfo(){
 		 
 	 }

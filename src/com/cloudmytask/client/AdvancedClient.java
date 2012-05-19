@@ -31,7 +31,6 @@ public class AdvancedClient extends Thread {
 	}
 
 	public void run() {
-		// TODO Auto-generated method stub
 		super.run();
 	}
 	
@@ -52,7 +51,6 @@ public class AdvancedClient extends Thread {
 				
 				ApMonLog apm = ApMonLog.getInstance();
 				
-				// TODO Auto-generated method stub
 				r = new Request("vreau sa-mi procesezi scriptul asta", Request.REQUEST_PROCESS_SCRIPT);			
 				r.scriptFileData = data;
 				r.scriptFileName = filename;	
@@ -83,7 +81,6 @@ public class AdvancedClient extends Thread {
 		final int instancePort = this.serviceInstancePort;
 
 		Request r;
-		// TODO Auto-generated method stub
 		r = new Request("vreau sa-mi procesezi scriptul asta", Request.REQUEST_PROCESS_SCRIPT);			
 		r.scriptFileData = data;
 		r.scriptFileName = filename;	

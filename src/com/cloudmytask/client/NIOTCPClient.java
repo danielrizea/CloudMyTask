@@ -11,9 +11,7 @@ import java.net.Socket;
 import com.cloudmytask.utils.DataUtils;
 
 public class NIOTCPClient extends Thread {
-	// TODO - parametrizat
-	public static final int NumberOfClients = 4;
-	public static final int NumberOfMessages = 3;
+
 	
 	private String serverIP;
 	private int serverPort;

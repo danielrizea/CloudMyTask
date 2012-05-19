@@ -36,12 +36,13 @@ public class CentralServiceObject implements CentralPublicServiceInterface, Cent
 		bannedList = new ConcurrentHashMap<String, Boolean>();
 		loadList = new ConcurrentHashMap<String, Integer>();
 		
-		//TODO parametrizare
-		this.evaluateRequestsPool = Executors.newFixedThreadPool(4);
-		this.processIsBannedRequestsPool = Executors.newFixedThreadPool(4);
-		this.processAddToBannedRequestsPool = Executors.newFixedThreadPool(4);
-		this.processUpdateStatusRequestsPool = Executors.newFixedThreadPool(4);
-		this.processGetAvailableRequestsPool = Executors.newFixedThreadPool(4);
+
+		this.evaluateRequestsPool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_CENTRALSERVICE);
+		this.processIsBannedRequestsPool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_CENTRALSERVICE);
+		this.processAddToBannedRequestsPool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_CENTRALSERVICE);
+		this.processUpdateStatusRequestsPool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_CENTRALSERVICE);
+		this.processGetAvailableRequestsPool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_CENTRALSERVICE);
+		
 		// MULTICAST - creare grup de multicast
 		try {	
 			MulticastGroup group = new MulticastGroup(GlobalConfig.MulticastAddress, GlobalConfig.MulticastPort);

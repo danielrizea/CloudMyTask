@@ -3,6 +3,7 @@ package com.cloudmytask.connectors.udp;
 import java.net.*;
 import java.util.concurrent.*;
 
+import com.cloudmytask.GlobalConfig;
 import com.cloudmytask.service.CMTPublicServiceInterface;
 
 public class CMTServiceSocketConnectorUDP {
@@ -13,12 +14,12 @@ public class CMTServiceSocketConnectorUDP {
 	private ExecutorService processPool;
 	
 	//TODO param
-	public static int processThreadsInPool = 10;
+	public static int processThreadsInPool = GlobalConfig.processThreadsInPool;
 	
 	// 0 -> 1 thread per request
 	// 1 - > use thread pool
 	//TODO param
-	public static int behaviour = 0;
+	public static int behaviour = GlobalConfig.BEHAVIOUR;
 	
 	
 	public CMTServiceSocketConnectorUDP(CMTPublicServiceInterface ssi, int ports[]) {

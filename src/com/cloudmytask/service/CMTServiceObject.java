@@ -46,6 +46,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		@Override
 		public void run() {
 
+			// TODO Auto-generated method stub
 			while(true){
 				ApMonLog apm = ApMonLog.getInstance();
 				apm.logMessage("serviceInstanceLoad_"+machineDescription.id, 0, (requestsInExecution.size()*100)/machineDescription.getMaxJobsInExecution());
@@ -65,14 +66,17 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		this.decodePool = Executors.newFixedThreadPool(3);
 		this.sendResultPool = Executors.newFixedThreadPool(2);
 
-		this.createScriptFilePool = Executors.newFixedThreadPool(4);
 		//max jobs = number of threads available
 		this.runScriptOnServerPool = Executors.newFixedThreadPool(machineDescription.getMaxJobsInExecution());
-		this.jobHandOffPool = Executors.newFixedThreadPool(4);
-		this.discoverFreeNeighbotPool = Executors.newFixedThreadPool(4);
-		this.decideMachineAvailablePool = Executors.newFixedThreadPool(4);
-		this.processMachineLoadRequestPool = Executors.newFixedThreadPool(4);
-		this.clientFilterPool = Executors.newFixedThreadPool(4);
+
+		this.createScriptFilePool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_CREATESCRIPTFILE);
+		//max jobs = number of threads available
+		this.jobHandOffPool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_JOBHANDOFF);
+
+		this.discoverFreeNeighbotPool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_SERVICE);
+		this.decideMachineAvailablePool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_SERVICE);
+		this.processMachineLoadRequestPool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_SERVICE);
+		this.clientFilterPool = Executors.newFixedThreadPool(GlobalConfig.NRTHREADS_SERVICE);
 		
 		//interfaces needed
 		this.clientObjectInterface = clientObjectInterface;

@@ -14,7 +14,7 @@ public class ReadJob implements Runnable {
 	public void run() {
 		try {
 			
-			// citire pachet decpe sochet
+			// citire pachet de pe sochet
 			this.server.doRead(this.key);
 		} catch (Exception e) {
 			System.err.println("ReadJob exception: " + e);
