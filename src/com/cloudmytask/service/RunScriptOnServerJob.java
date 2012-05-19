@@ -35,14 +35,7 @@ public class RunScriptOnServerJob implements Runnable {
 
 		   try {
 
-			   //String[]callAndArgs= {"\"python\",\"my_python.py\",\"arg1\",\"arg2\"};
 			   String command = "python " + filename ;
-
-			 //  cmd /c c:\\path\\to\\python python\\test.py
-			  // String comm = "dir ";
-			 // System.out.println(command);
-
-			 // System.out.println("Request " + request);
   
 			  Process p = Runtime.getRuntime().exec(command);
 	          BufferedReader stdInput = new BufferedReader(new 
