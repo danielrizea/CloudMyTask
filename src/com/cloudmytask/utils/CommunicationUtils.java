@@ -122,6 +122,8 @@ public class CommunicationUtils {
 	          //receive response request object
 	          response = (Request) in.readObject();
 	          System.out.println(response);
+	          
+	          in.close();
 	            
 	        } catch (Exception e) {
 	            System.err.println("[CMTClientObject get response]- exception: " + e.getMessage());

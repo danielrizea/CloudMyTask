@@ -26,7 +26,7 @@ public class ProcessMachineLoadRequestJob implements Runnable {
 	public void run() {
 	
 		Request answer = new Request("[CMTServiceObjectInstance "+machineDescription.id+"] incarcare masina", Request.REQUEST_GET_LOAD);
-		System.out.println("[CMTServiceObjectInstance "+machineDescription.id+"] send local load " + 100*((float)(executingRequests.size()/machineDescription.getMaxJobsInExecution())));
+		//System.out.println("[CMTServiceObjectInstance "+machineDescription.id+"] send local load " + 100*((float)(executingRequests.size()/machineDescription.getMaxJobsInExecution())));
 		answer.loadFactor = 100*((float)(executingRequests.size()/machineDescription.getMaxJobsInExecution()));
 		ci.sendResult(answer);
 		

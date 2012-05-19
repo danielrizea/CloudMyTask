@@ -14,7 +14,7 @@ public class DiscoverFreeNeighborJob implements Runnable {
 	private MachineInfo machineDescription;
 	private CMTClientPublicInterface clientInterface;
 	
-	private String tag = "DiscoverFreeNeighbors";
+	private String tag = "DiscoveredFreeNeighbors";
 	
 	public DiscoverFreeNeighborJob(CMTPrivateServiceInterface service, Request request, CallbackInterface ci, CMTClientPublicInterface clientInterface, MachineInfo machineDescription) {
 		this.service = service;
@@ -51,7 +51,7 @@ public class DiscoverFreeNeighborJob implements Runnable {
 		
 		// 0% - 100% load possible values 
 		float min=100;
-		int poz=-1;
+		int poz=machineDescription.id;
 		
 		for(int i=0;i<load.length;i++){
 			if(load[i]<min){
@@ -60,8 +60,8 @@ public class DiscoverFreeNeighborJob implements Runnable {
 			}
 		}
 		
-		System.out.println("[CMTServiceObjectInstance "+machineDescription.id+"] DiscoverFreeNeighbor send to " + poz + " neighborsLoad " + Arrays.toString(load) );
-		machineDescription.writeToLogFile(tag, "DiscoverFreeNeighbor send to " + poz + " neighborsLoad " + Arrays.toString(load) );
+		//System.out.println("[CMTServiceObjectInstance "+machineDescription.id+"] DiscoverFreeNeighbor send to " + poz + " neighborsLoad " + Arrays.toString(load) );
+		machineDescription.writeToLogFile(tag, "DiscoveredFreeNeighbor send to " + poz + " neighborsLoad " + Arrays.toString(load) );
 		this.service.jobHandOff(request, ci, poz);
 		
 	}

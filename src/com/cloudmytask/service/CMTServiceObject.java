@@ -46,7 +46,6 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		@Override
 		public void run() {
 
-			// TODO Auto-generated method stub
 			while(true){
 				ApMonLog apm = ApMonLog.getInstance();
 				apm.logMessage("serviceInstanceLoad_"+machineDescription.id, 0, (requestsInExecution.size()*100)/machineDescription.getMaxJobsInExecution());
@@ -66,8 +65,6 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		this.decodePool = Executors.newFixedThreadPool(3);
 		this.sendResultPool = Executors.newFixedThreadPool(2);
 
-		
-		//TODO parametrizare
 		this.createScriptFilePool = Executors.newFixedThreadPool(4);
 		//max jobs = number of threads available
 		this.runScriptOnServerPool = Executors.newFixedThreadPool(machineDescription.getMaxJobsInExecution());
@@ -112,7 +109,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 
 	public void decodeRequest(byte[] request, CallbackInterface ci) {
 
-		machineDescription.writeToLogFile(LOGTag,"S-a primit o cerere de decode (ci=" + ci + ") => trimit cerere de decode" );
+		//machineDescription.writeToLogFile(LOGTag,"S-a primit o cerere de decode (ci=" + ci + ") => trimit cerere de decode" );
 		//System.out.println(LOGTag + "S-a primit o cerere de decode (ci=" + ci + ") => trimit cerere de decode");
 		
 		this.decodePool.submit(new DecodeJob(this, request, ci));
@@ -135,7 +132,7 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 			CallbackInterface ci) {
 		
 		//System.out.println(LOGTag + " S-a primit o cerere de creare script local (ci=" + ci + ") request" + request);
-		machineDescription.writeToLogFile(LOGTag, " S-a primit o cerere de creare script local (ci=" + ci + ") request" + request);
+		//machineDescription.writeToLogFile(LOGTag, " S-a primit o cerere de creare script local (ci=" + ci + ") request" + request);
 		this.createScriptFilePool.submit(new CreateServerScriptJob(this, request, ci));
 		
 	}
@@ -144,8 +141,8 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	public void runScriptOnServer(Request request, String filename,
 			CallbackInterface ci) {
 
-		System.out.println(LOGTag + " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
-		machineDescription.writeToLogFile(LOGTag, " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
+		//System.out.println(LOGTag + " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
+		//machineDescription.writeToLogFile(LOGTag, " S-a primit o cerere de executie script pe server   (ci=" + ci + ") +request" + request);
 		this.runScriptOnServerPool.submit(new RunScriptOnServerJob(this, request, filename, ci,machineDescription, requestsInExecution));
 	}
 
@@ -157,12 +154,12 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 	
 	public void sendAnswerToClient(Request request, CallbackInterface ci){
 		
-		this.sendResultPool.submit(new SendAnswerToClientJob(this,request,ci,requestsProcessed));
+		this.sendResultPool.submit(new SendAnswerToClientJob(this,request,ci,requestsProcessed, machineDescription));
 	}
 	
 	public void jobHandOff(Request request, CallbackInterface ci, int machineID) {
 
-		machineDescription.writeToLogFile(LOGTag," start job hand-off" );
+		//machineDescription.writeToLogFile(LOGTag," start job hand-off" );
 		this.jobHandOffPool.submit(new HandOffJob(this, request, ci, clientObjectInterface, machineDescription, machineID, requestsWaitingAnswer));
 	}
 	
@@ -195,7 +192,6 @@ public class CMTServiceObject implements CMTPublicServiceInterface, CMTPrivateSe
 		
 		try {
 			
-			//TODO - param
 			this.decodePool.awaitTermination(100000, TimeUnit.MILLISECONDS);
 			this.sendResultPool.awaitTermination(100000, TimeUnit.MILLISECONDS); 
 			this.createScriptFilePool.awaitTermination(100000, TimeUnit.MILLISECONDS);

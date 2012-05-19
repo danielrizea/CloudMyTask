@@ -97,11 +97,14 @@ public class GlobalTest {
 		ApMonLog apm = ApMonLog.getInstance();
 		
 		int nr_clienti = GlobalConfig.NROFCLIENTS;
+		int i;
 		
-		for(int i=0;i<nr_clienti;i++){
-			AdvancedClient client = new AdvancedClient("client_"+i, "localhost", GlobalConfig.CLIENT_COMM_PORT, 10000+i);
+		for(i=0;i<nr_clienti-1;i++){
+			AdvancedClient client = new AdvancedClient("client_"+i, "localhost", GlobalConfig.CLIENT_COMM_PORT, (i+2)*10000);
 			advancedClients.add(client);
 		}
+		AdvancedClient client = new AdvancedClient("client_"+i, "localhost", GlobalConfig.CLIENT_COMM_PORT+3, (i+2)*10000);
+		advancedClients.add(client);
 		
 		String filename = null;
 		String data = null;
@@ -131,23 +134,76 @@ public class GlobalTest {
 			}
 			
 			Random rand = new Random();
-			int maxRequestsPerCicle = 30;
-			for(int t=0;t<1;t++){
-				for(int i=0;i<advancedClients.size();i++){
+			int maxRequestsPerCicle = 20;
+			while(true){
+				for(i=0;i<advancedClients.size();i++){
 			
-					int requests = 100; 
+					int requests = 4; 
 							//rand.nextInt(maxRequestsPerCicle);
 					
 							
 					for(int j=0;j<requests;j++)
 						advancedClients.get(i).submitScriptForExecutionBlockOnWaitingResult(data, filename);
 				
-					try {
-						Thread.sleep(500);
-					} catch (Exception e) {}
+				
 					
 				}
+				try {
+					Thread.sleep(2000);
+				} catch (Exception e) {}
 			}
+	}
+	
+	public static void test_2(){
+		
+		ArrayList<AdvancedClient> advancedClients = new ArrayList<AdvancedClient>();
+		
+		//obtinere singleton testare pentru MonALISA
+		ApMonLog apm = ApMonLog.getInstance();
+		
+		int nr_clienti = GlobalConfig.NROFCLIENTS;
+		int i;
+		
+		AdvancedClient client = new AdvancedClient("client_"+0, "localhost", GlobalConfig.CLIENT_COMM_PORT, 12000);
+		advancedClients.add(client);
+
+		String filename = null;
+		String data = null;
+		
+			try{	
+				//fisierul ce va fi trimis de un client pentru a 
+				filename = GlobalConfig.SCRIPT;
+				//citire script python
+				FileInputStream fstream = new FileInputStream(filename);
+				// Get the object of DataInputStream
+				DataInputStream in = new DataInputStream(fstream);
+				BufferedReader br = new BufferedReader(new InputStreamReader(in));
+				String strLine;
+				//Read File Line By Line
+				String scriptData = "";
+				while ((strLine = br.readLine()) != null)   {
+					// Print the content on the console
+					//System.out.println (strLine);
+					scriptData += strLine + "\n";
+				}
+				//Close the input stream
+				data = scriptData;
+
+			}
+			catch(Exception e){
+				System.out.println("Exception in reading script file");
+			}
+			
+			Random rand = new Random();
+			int maxRequestsPerCicle = 20;
+			int requests = 4; 
+							//rand.nextInt(maxRequestsPerCicle);
+					
+							
+					for(int j=0;j<requests;j++)
+						advancedClients.get(0).submitScriptForExecutionBlockOnWaitingResult(data, filename);
+
+
 	}
 	
 	
@@ -157,6 +213,6 @@ public class GlobalTest {
 		ReadIni4jConfig var = new ReadIni4jConfig();
 		startService();
 		test_1();
-
+		//test_2();
 	}
 }

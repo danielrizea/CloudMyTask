@@ -1,9 +1,10 @@
 package com.cloudmytask.service;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MachineInfo {
 
@@ -19,6 +20,8 @@ public class MachineInfo {
 	private static final int WORKING_THREADS_PER_PROCESS = 2;
 	
 	private static int MAX_WORKING_THREADS_ON_MACHINE;
+	
+	private DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 	
 	public MachineInfo(int id, int[] neighbours){
 		
@@ -44,7 +47,7 @@ public class MachineInfo {
 	public void writeToLogFile(String tag, String message){
 		try{
 			if(outLog != null){
-				outLog.append("["+tag+" "+ this.id +"] " + message );
+				outLog.append(dateFormat.format(new Date()) + " - ["+tag+" "+ this.id +"] " + message );
 				outLog.newLine();
 				outLog.flush();
 			}
